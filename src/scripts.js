@@ -1,4 +1,4 @@
-// import users from './data/users-data';
+import users from './data/users-data';
 import recipeData from  './data/recipe-data';
 import ingredientData from './data/ingredient-data';
 
@@ -38,18 +38,8 @@ showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
 
 // GENERATE A USER ON LOAD
-function generateUser() => {
-  fetch('http://localhost:3001/api/v1/users')
-  .then(response => chooseUser(response.json()))
-  .then(loadUserInfo)
-}
-
-
-function chooseUser() {
+function generateUser() {
   user = new User(users[Math.floor(Math.random() * users.length)]);
-}
-
-function loadUserInfo() {
   let firstName = user.name.split(" ")[0];
   let welcomeMsg = `
     <div class="welcome-msg">
