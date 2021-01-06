@@ -14,9 +14,27 @@ describe('User', () => {
     userInfo = users[0];
     user = new User(userInfo);
 
-    recipe1 = {name: 'Chicken Parm', type: ['italian', 'dinner']};
-    recipe2 = {name: 'Somen', type: ['japanese', 'lunch']};
-    recipe3 = {name: 'Yakisoba', type: ['japanese', 'lunch']};
+    recipe1 = {
+      name: 'Chicken Parm',
+      tags: ['italian', 'dinner'],
+      ingredients: [
+        {id: 1, name: "parmesan", estimatedCostInCents: 804},
+        {id: 5, name: "chicken breast", estimatedCostInCents: 804}
+      ]};
+    recipe2 = {
+      name: 'Somen',
+      tags: ['japanese', 'lunch'],
+      ingredients: [
+        {id: 3, name: "noodles", estimatedCostInCents: 804},
+        {id: 2, name: "soy sauce", estimatedCostInCents: 804}
+      ]};
+    recipe3 = {
+      name: 'Yakisoba',
+      tags: ['japanese', 'lunch'],
+      ingredients: [
+        {id: 3, name: "noodles", estimatedCostInCents: 804},
+        {id: 4, name: "oil", estimatedCostInCents: 804}
+      ]};
   });
 
   it('should be a function', () => {
@@ -85,24 +103,24 @@ describe('User', () => {
     expect(user.recipesToCook).to.eql([recipe1, recipe2])
   });
 
-  it('should be able to filter favoriteRecipes by type', () => {
+  it('should be able to filter favoriteRecipes by tag', () => {
     user.addRecipe('favoriteRecipes', recipe1);
     user.addRecipe('favoriteRecipes', recipe2);
 
-    expect(user.filterRecipes('favoriteRecipes', 'type', 'italian')).to.deep.equal([recipe1]);
+    expect(user.filterRecipes('favoriteRecipes', 'tags', 'italian')).to.deep.equal([recipe1]);
 
     user.addRecipe('favoriteRecipes', recipe3)
-    expect(user.filterRecipes('favoriteRecipes', 'type', 'japanese')).to.deep.equal([recipe2, recipe3]);
+    expect(user.filterRecipes('favoriteRecipes', 'tags', 'japanese')).to.deep.equal([recipe2, recipe3]);
   });
 
-  it('should be able to filter recipesToCook by type', () => {
+  it('should be able to filter recipesToCook by tag', () => {
     user.addRecipe('recipesToCook', recipe1);
     user.addRecipe('recipesToCook', recipe2);
 
-    expect(user.filterRecipes('recipesToCook', 'type', 'italian')).to.deep.equal([recipe1]);
+    expect(user.filterRecipes('recipesToCook', 'tags', 'italian')).to.deep.equal([recipe1]);
 
     user.addRecipe('recipesToCook', recipe3);
-    expect(user.filterRecipes('recipesToCook', 'type', 'japanese')).to.deep.equal([recipe2, recipe3]);
+    expect(user.filterRecipes('recipesToCook', 'tags', 'japanese')).to.deep.equal([recipe2, recipe3]);
   });
 
   it('should be able to filter favoriteRecipes by name', () => {
