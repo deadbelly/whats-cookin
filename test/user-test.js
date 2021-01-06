@@ -145,6 +145,16 @@ describe('User', () => {
     user.addRecipe('favoriteRecipes', recipe3);
 
     expect(user.filterRecipes('favoriteRecipes', 'ingredients', 'chicken breast')).to.eql([recipe1]);
+    expect(user.filterRecipes('favoriteRecipes', 'ingredients', 'noodles')).to.eql([recipe2, recipe3]);
+  });
+
+  it('should be able to filter recipesToCook by ingredient name', () => {
+    user.addRecipe('recipesToCook', recipe1);
+    user.addRecipe('recipesToCook', recipe2);
+    user.addRecipe('recipesToCook', recipe3);
+
+    expect(user.filterRecipes('recipesToCook', 'ingredients', 'chicken breast')).to.eql([recipe1]);
+    expect(user.filterRecipes('recipesToCook', 'ingredients', 'noodles')).to.eql([recipe2, recipe3]);
   });
 
 });
