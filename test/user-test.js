@@ -107,20 +107,20 @@ describe('User', () => {
     user.addRecipe('favoriteRecipes', recipe1);
     user.addRecipe('favoriteRecipes', recipe2);
 
-    expect(user.filterRecipes('favoriteRecipes', 'tags', 'italian')).to.deep.equal([recipe1]);
+    expect(user.filterRecipes('favoriteRecipes', 'tags', 'italian')).to.eql([recipe1]);
 
     user.addRecipe('favoriteRecipes', recipe3)
-    expect(user.filterRecipes('favoriteRecipes', 'tags', 'japanese')).to.deep.equal([recipe2, recipe3]);
+    expect(user.filterRecipes('favoriteRecipes', 'tags', 'japanese')).to.eql([recipe2, recipe3]);
   });
 
   it('should be able to filter recipesToCook by tag', () => {
     user.addRecipe('recipesToCook', recipe1);
     user.addRecipe('recipesToCook', recipe2);
 
-    expect(user.filterRecipes('recipesToCook', 'tags', 'italian')).to.deep.equal([recipe1]);
+    expect(user.filterRecipes('recipesToCook', 'tags', 'italian')).to.eql([recipe1]);
 
     user.addRecipe('recipesToCook', recipe3);
-    expect(user.filterRecipes('recipesToCook', 'tags', 'japanese')).to.deep.equal([recipe2, recipe3]);
+    expect(user.filterRecipes('recipesToCook', 'tags', 'japanese')).to.eql([recipe2, recipe3]);
   });
 
   it('should be able to filter favoriteRecipes by name', () => {
@@ -128,7 +128,23 @@ describe('User', () => {
     user.addRecipe('favoriteRecipes', recipe2);
     user.addRecipe('favoriteRecipes', recipe3);
 
-    expect(user.filterRecipes('favoriteRecipes', 'name', 'Chicken Parm')).to.deep.equal([recipe1]);
+    expect(user.filterRecipes('favoriteRecipes', 'name', 'Chicken Parm')).to.eql([recipe1]);
+  });
+
+  it('should be able to filter recipesToCook by name', () => {
+    user.addRecipe('recipesToCook', recipe1);
+    user.addRecipe('recipesToCook', recipe2);
+    user.addRecipe('recipesToCook', recipe3);
+
+    expect(user.filterRecipes('recipesToCook', 'name', 'Somen')).to.eql([recipe2]);
+  });
+
+  it('should be able to filter favoriteRecipes by ingredient name', () => {
+    user.addRecipe('favoriteRecipes', recipe1);
+    user.addRecipe('favoriteRecipes', recipe2);
+    user.addRecipe('favoriteRecipes', recipe3);
+
+    expect(user.filterRecipes('favoriteRecipes', 'ingredients', 'chicken breast')).to.eql([recipe1]);
   });
 
 });
