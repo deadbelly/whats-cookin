@@ -185,7 +185,7 @@ span {
 }
 
 .my-recipes-banner {
-  display: none;
+  /* display: none; */
   margin-top: 25px;
 }
 
