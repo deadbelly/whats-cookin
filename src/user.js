@@ -6,23 +6,23 @@ class User {
     this.favoriteRecipes = [];
     this.recipesToCook = [];
   }
-  saveRecipe(recipe) {
-    this.favoriteRecipes.push(recipe);
+
+  addRecipe(array, recipe) {
+    if (!this[array].includes(recipe)) {
+      this[array].push(recipe)
+    }
   }
 
-  removeRecipe(recipe) {
-    let i = this.favoriteRecipes.indexOf(recipe);
-    this.favoriteRecipes.splice(i, 1);
+  removeRecipe(array, recipe) {
+    let i = this[array].indexOf(recipe);
+    this[array].splice(i, 1);
   }
 
-  decideToCook(recipe) {
-    this.recipesToCook.push(recipe);
-  }
-  filterRecipes(type) {
-    return this.favoriteRecipes.filter(recipe => recipe.type.includes(type));
-  }
-  searchForRecipe(keyword) {
-    return this.favoriteRecipes.filter(recipe => recipe.name.includes(keyword) || recipe.ingredients.includes(keyword));
+  filterRecipes(array, key, search) {
+    if (key === 'ingredients') {
+      return this[array].filter(recipe => recipe.getIngredientNames().includes(search));
+    }
+    return this[array].filter(recipe => recipe[key].includes(search));
   }
 }
 
