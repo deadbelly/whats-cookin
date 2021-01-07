@@ -11,9 +11,9 @@ const users = [
   amount: 3}],
   favoriteRecipes: [],
   recipesToCook: []
-]
+}]
 
-const recipes = [
+const recipeData = [
   {id: 1,
   name: 'Chicken Parmesan',
   image:'www.example.com/image.jpg',
@@ -34,7 +34,7 @@ const recipes = [
   {id: 2,
   name: 'Somen',
   image: 'www.example.com/image.jpg',
-  tags: ['dinner', 'lunch', 'side-dish'],
+  tags: ['dinner', 'lunch', 'side dish'],
   ingredients: [{id: 2,
   quantity: {
     amount: 1,
@@ -51,7 +51,7 @@ const recipes = [
   {id: 3,
   name: 'Yakisoba',
   image: 'www.example.com/image.jpg',
-  tags: [],
+  tags: ['lunch', 'side dish'],
   ingredients: [{id: 2,
   quantity: {
     amount: 1,
@@ -99,3 +99,5 @@ const ingredients = [
     estimatedCostInCents: 50
   }
 ]
+
+export {users, recipeData, ingredients};
