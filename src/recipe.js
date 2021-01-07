@@ -35,10 +35,6 @@ class Recipe {
       return Math.floor(sum + ingredient.estimatedCostInCents * ingredient.quantity.amount);
     }, 0);
   }
-  // return this.ingredients.reduce((sum, i) => {
-  //   const foundIngredient = allIngredients.find(ingredient => ingredient.id === i.id);
-  //   return sum + foundIngredient.estimatedCostInCents * i.quantity.amount;
-  // }, 0);
 }
 
 module.exports = Recipe;
