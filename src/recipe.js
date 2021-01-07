@@ -8,15 +8,11 @@ class Recipe {
     this.ingredients = this.findIngredients(allIngredients, recipe.ingredients);
   }
 
-  findIngredients(allIngredients, ingredientData) {
-    const ingredientList = ingredientData.reduce((acc, i) => {
-      allIngredients.forEach(ingredient => {
-        let findArray = acc.find(ingredient => ingredient.id === i.id);
-        if (ingredient.id === i.id && !findArray) {
-          ingredient['quantity'] = {amount: i.quantity.amount, unit: i.quantity.unit};
-          acc.push(ingredient);
-        }
-      })
+  findIngredients(allIngredients, recipeIngredients) {
+    const ingredientList = recipeIngredients.reduce((acc, i) => {
+      const foundIngredient = allIngredients.find(ingredient => ingredient.id === i.id);
+      foundIngredient.quantity = i.quantity;
+      acc.push(foundIngredient);
       return acc;
     }, []);
     // console.log(ingredientList);
