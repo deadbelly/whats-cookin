@@ -1,7 +1,10 @@
 import { expect } from 'chai';
 
 import User from '../src/user';
-import users from '../src/data/users-data';
+import {users} from './test-data';
+import {recipes} from './test-data';
+import {ingredients} from './test-data';
+
 
 describe('User', () => {
   let user;
@@ -13,28 +16,6 @@ describe('User', () => {
   beforeEach(() => {
     userInfo = users[0];
     user = new User(userInfo);
-
-    recipe1 = {
-      name: 'Chicken Parm',
-      tags: ['italian', 'dinner'],
-      ingredients: [
-        {id: 1, name: "parmesan", estimatedCostInCents: 804},
-        {id: 5, name: "chicken breast", estimatedCostInCents: 804}
-      ]};
-    recipe2 = {
-      name: 'Somen',
-      tags: ['japanese', 'lunch'],
-      ingredients: [
-        {id: 3, name: "noodles", estimatedCostInCents: 804},
-        {id: 2, name: "soy sauce", estimatedCostInCents: 804}
-      ]};
-    recipe3 = {
-      name: 'Yakisoba',
-      tags: ['japanese', 'lunch'],
-      ingredients: [
-        {id: 3, name: "noodles", estimatedCostInCents: 804},
-        {id: 4, name: "oil", estimatedCostInCents: 804}
-      ]};
   });
 
   it('should be a function', () => {

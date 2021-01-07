@@ -11,7 +11,7 @@ const users = [
   amount: 3}],
   favoriteRecipes: [],
   recipesToCook: []
-]
+}]
 
 const recipes = [
   {id: 1,
@@ -99,3 +99,5 @@ const ingredients = [
     estimatedCostInCents: 50
   }
 ]
+
+export {users, recipes, ingredients};
