@@ -302,7 +302,7 @@ function pressEnterSearch(event) {
 
 function searchRecipes() {
   showAllRecipes();
-  let searchedRecipes = recipeData.filter(recipe => {
+  let searchedRecipes = recipes.filter(recipe => {
     return recipe.name.toLowerCase().includes(searchInput.value.toLowerCase());
   });
   filterNonSearched(createRecipeObject(searchedRecipes));
@@ -317,7 +317,7 @@ function filterNonSearched(filtered) {
 }
 
 function createRecipeObject(recipes) {
-  recipes = recipes.map(recipe => new Recipe(recipe));
+  recipes = recipes.map(recipe => new Recipe(recipe, ingredientsData));
   return recipes
 }
 
