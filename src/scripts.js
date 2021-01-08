@@ -304,8 +304,16 @@ function searchRecipes() {
   showAllRecipes();
   let searchedRecipes = recipes.filter(recipe => {
     return recipe.name.toLowerCase().includes(searchInput.value.toLowerCase());
-  });
+  }); 
   filterNonSearched(createRecipeObject(searchedRecipes));
+}
+
+function searchIngredients() {
+  showAllRecipes();
+  let ingredientNames = recipes.forEach(recipe => {
+    return recipe.ingredients.filter(ingredient => {
+      return ingredient.toLowerCase().includes(searchInput.value.toLowerCase());
+  });
 }
 
 function filterNonSearched(filtered) {
