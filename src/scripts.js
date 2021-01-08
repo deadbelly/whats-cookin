@@ -125,7 +125,7 @@ function addToDom(recipeInfo, shortRecipeName) {
         </div>
       </div>
       <h4>${recipeInfo.tags[0]}</h4>
-      <img src="../images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">
+      <img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">
     </div>`
   main.insertAdjacentHTML("beforeend", cardHtml);
 }
@@ -232,16 +232,6 @@ function isDescendant(parent, child) {
   return false;
 }
 
-// function showSavedRecipes() {
-//   let unsavedRecipes = recipes.filter(recipe => {
-//     return !user.favoriteRecipes.includes(recipe.id);
-//   });
-//   unsavedRecipes.forEach(recipe => {
-//     let domRecipe = document.getElementById(`${recipe.id}`);
-//     domRecipe.classList.add('hidden');
-//   });
-//   showMyRecipesBanner();
-// }
 
 function showSavedRecipes() {
   const favoriteRecipes = recipes.filter(recipe => {
