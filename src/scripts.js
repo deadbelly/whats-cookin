@@ -25,7 +25,7 @@ let menuOpen = false;
 let user;
 let users;
 let recipes;
-let ingredientsData;
+let ingredients;
 
 
 window.addEventListener("load", loadAllData);
@@ -41,30 +41,30 @@ searchForm.addEventListener("submit", pressEnterSearch);
 //FETCH REQUESTS
 function getIngredients() {
   return fetch("http://localhost:3001/api/v1/ingredients")
-  .then(response => response.json())
+  .then(response => response.json());
 }
 
 function getUsers() {
   return fetch("http://localhost:3001/api/v1/users")
-  .then(response => response.json())
+  .then(response => response.json());
 }
 
 function getRecipes() {
   return fetch("http://localhost:3001/api/v1/recipes")
-  .then(response => response.json())
+  .then(response => response.json());
 }
 
 function loadAllData() {
   Promise.all([getUsers(), getRecipes(), getIngredients()])
   .then(values => {
-    users = values[0]
-    recipes = values[1]
-    ingredientsData = values[2]
-    generateUser()
-    instantiateRecipes()
-    createCards()
-    findTags()
-  })
+    users = values[0];
+    recipes = values[1];
+    ingredients = values[2];
+    generateUser();
+    instantiateRecipes();
+    createCards();
+    findTags();
+  });
 }
 
 
@@ -83,10 +83,7 @@ function generateUser() {
 
 // CREATE RECIPE CARDS
 function instantiateRecipes() {
-  recipes.reduce((instances, recipe) => {
-    instances.push(new Recipe(recipe, ingredientsData));
-    return instances;
-  }, []);
+  recipes = recipes.map(recipe => new Recipe(recipe, ingredients));
 }
 
 function createCards(recipeArray = recipes) {
@@ -333,7 +330,7 @@ function showAllRecipes() {
 // CREATE AND USE PANTRY
 function findPantryInfo() {
   user.pantry.forEach(item => {
-    let itemInfo = ingredientsData.find(ingredient => {
+    let itemInfo = ingredients.find(ingredient => {
       return ingredient.id === item.ingredient;
     });
     let originalIngredient = pantryInfo.find(ingredient => {
