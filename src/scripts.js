@@ -3,6 +3,12 @@ import './css/styles.scss';
 
 import User from './user';
 import Recipe from './recipe';
+import './images/apple-logo-outline.png'
+import './images/apple-logo.png'
+import './images/search.png'
+import './images/cookbook.png'
+import './images/cookbook.png'
+import './images/seasoning.png'
 
 
 
