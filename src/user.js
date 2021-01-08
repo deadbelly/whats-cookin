@@ -7,14 +7,14 @@ class User {
     this.recipesToCook = [];
   }
 
-  addRecipe(array, recipe) {
-    if (!this[array].includes(recipe)) {
-      this[array].push(recipe)
+  addRecipe(array, recipeId) {
+    if (!this[array].includes(recipeId)) {
+      this[array].push(recipeId)
     }
   }
 
-  removeRecipe(array, recipe) {
-    let i = this[array].indexOf(recipe);
+  removeRecipe(array, recipeId) {
+    let i = this[array].indexOf(recipeId);
     this[array].splice(i, 1);
   }
 
