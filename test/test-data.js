@@ -1,7 +1,8 @@
 const users = [
   {id: 1,
   name: "Saige O'Kon",
-  pantry: [{id: 1,
+  pantry: [
+  {id: 1,
   amount: 2},
 
   {id: 2,
@@ -18,7 +19,8 @@ const recipeData = [
   name: 'Chicken Parmesan',
   image:'www.example.com/image.jpg',
   tags: ['dinner', 'lunch', 'main dish'],
-  ingredients: [{id: 1,
+  ingredients: [
+  {id: 1,
   quantity: {
     amount: 1,
     unit: 'large'
@@ -35,7 +37,8 @@ const recipeData = [
   name: 'Somen',
   image: 'www.example.com/image.jpg',
   tags: ['dinner', 'lunch', 'side dish'],
-  ingredients: [{id: 2,
+  ingredients: [
+  {id: 2,
   quantity: {
     amount: 1,
     unit: 'lb'
@@ -52,7 +55,8 @@ const recipeData = [
   name: 'Yakisoba',
   image: 'www.example.com/image.jpg',
   tags: ['lunch', 'side dish'],
-  ingredients: [{id: 2,
+  ingredients: [
+  {id: 2,
   quantity: {
     amount: 1,
     unit: 'lb'
