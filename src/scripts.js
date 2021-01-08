@@ -95,14 +95,15 @@ function instantiateRecipes() {
 function createCards(recipeArray = recipes) {
   recipeArray.forEach(recipe => {
     let shortRecipeName = recipe.name;
+    let iconStatus = checkIfSaved(recipe)
     if (recipe.name.length > 40) {
       shortRecipeName = recipe.name.substring(0, 40) + "...";
     }
-    addToDom(recipe, shortRecipeName)
+    addToDom(recipe, shortRecipeName, iconStatus)
   });
 }
 
-function addToDom(recipeInfo, shortRecipeName) {
+function addToDom(recipeInfo, shortRecipeName, iconStatus) {
   let cardHtml = `
     <div class="recipe-card" id=${recipeInfo.id}>
       <h3 maxlength="40">${shortRecipeName}</h3>
@@ -113,9 +114,17 @@ function addToDom(recipeInfo, shortRecipeName) {
         </div>
       </div>
       <h4>${recipeInfo.tags[0]}</h4>
-      <img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">
+      ${iconStatus}
     </div>`
   main.insertAdjacentHTML("beforeend", cardHtml);
+}
+
+function checkIfSaved(recipe) {
+  if (user.favoriteRecipes.includes(recipe.id)) {
+    return '<img src="./images/apple-logo.png" alt="filled apple icon" class="card-apple-icon">'
+  } else {
+    return '<img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">'
+  }
 }
 
 function clearCards() {
