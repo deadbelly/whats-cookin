@@ -1,33 +1,55 @@
-import users from './data/users-data';
-import recipeData from  './data/recipe-data';
-import ingredientData from './data/ingredient-data';
-
 import './css/base.scss';
 import './css/styles.scss';
 
 import User from './user';
 import Recipe from './recipe';
 
+
+
 let allRecipesBtn = document.querySelector(".show-all-btn");
 let filterBtn = document.querySelector(".filter-btn");
 let fullRecipeInfo = document.querySelector(".recipe-instructions");
 let main = document.querySelector("main");
-let menuOpen = false;
 let pantryBtn = document.querySelector(".my-pantry-btn");
-let pantryInfo = [];
-let recipes = [];
 let savedRecipesBtn = document.querySelector(".saved-recipes-btn");
 let searchBtn = document.querySelector(".search-btn");
 let searchForm = document.querySelector("#search");
 let searchInput = document.querySelector("#search-input");
 let showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 let tagList = document.querySelector(".tag-list");
+let recipes = [];
+let pantryInfo = [];
+let menuOpen = false;
+
+// fetch get requests below
+
 let user;
+let users;
+let recipeData;
+let ingredientsData;
 
 
 window.addEventListener("load", createCards);
 window.addEventListener("load", findTags);
-window.addEventListener("load", generateUser);
+window.addEventListener("load", getUsers);
+
+
+
+// Fetch all data from all three apis first and foremost on window load before other functions try to fire
+// and utilize this data
+
+// createCards will need access to data from both ingredients and recipes apis
+
+// take data from recipe apis
+
+// instantiate recipe objects using the recipe class template so it will have usable methods
+
+// assign this array of recipe objects to a globaL variable
+
+// pass this array of recipe objects as an argument for create cards function
+
+//
+
 allRecipesBtn.addEventListener("click", showAllRecipes);
 filterBtn.addEventListener("click", findCheckedBoxes);
 main.addEventListener("click", addToMyRecipes);
@@ -36,6 +58,17 @@ savedRecipesBtn.addEventListener("click", showSavedRecipes);
 searchBtn.addEventListener("click", searchRecipes);
 showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
+
+// fetch api functions listed below
+
+function getUsers() {
+  fetch("http://localhost:3001/api/v1/users")
+  .then(response => response.json())
+  .then(data => users = data)
+  .then(generateUser)
+}
+
+
 
 // GENERATE A USER ON LOAD
 function generateUser() {
