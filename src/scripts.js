@@ -29,8 +29,8 @@ let recipeData;
 let ingredientsData;
 
 
-window.addEventListener("load", createCards);
-window.addEventListener("load", findTags);
+window.addEventListener("load", getIngredients);
+window.addEventListener("load", getRecipes);
 window.addEventListener("load", getUsers);
 
 
@@ -61,6 +61,13 @@ searchForm.addEventListener("submit", pressEnterSearch);
 
 // fetch api functions listed below
 
+function getIngredients() {
+  fetch("http://localhost:3001/api/v1/ingredients")
+  .then(response => response.json())
+  .then(data => ingredientsData = data)
+  .then(getRecipes)
+}
+
 function getUsers() {
   fetch("http://localhost:3001/api/v1/users")
   .then(response => response.json())
@@ -68,7 +75,13 @@ function getUsers() {
   .then(generateUser)
 }
 
-
+function getRecipes() {
+  fetch("http://localhost:3001/api/v1/recipes")
+  .then(response => response.json())
+  .then(data => recipeData = data)
+  .then(createCards)
+  .then(findTags)
+}
 
 // GENERATE A USER ON LOAD
 function generateUser() {
@@ -86,7 +99,7 @@ function generateUser() {
 // CREATE RECIPE CARDS
 function createCards() {
   recipeData.forEach(recipe => {
-    let recipeInfo = new Recipe(recipe);
+    let recipeInfo = new Recipe(recipe, ingredientsData);
     let shortRecipeName = recipeInfo.name;
     recipes.push(recipeInfo);
     if (recipeInfo.name.length > 40) {
