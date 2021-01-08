@@ -28,27 +28,7 @@ let recipes;
 let ingredientsData;
 
 
-window.addEventListener("load", getIngredients);
-window.addEventListener("load", getRecipes);
-window.addEventListener("load", getUsers);
-
-
-
-// Fetch all data from all three apis first and foremost on window load before other functions try to fire
-// and utilize this data
-
-// createCards will need access to data from both ingredients and recipes apis
-
-// take data from recipe apis
-
-// instantiate recipe objects using the recipe class template so it will have usable methods
-
-// assign this array of recipe objects to a globaL variable
-
-// pass this array of recipe objects as an argument for create cards function
-
-//
-
+window.addEventListener("load", loadAllData);
 allRecipesBtn.addEventListener("click", showAllRecipes);
 filterBtn.addEventListener("click", findCheckedBoxes);
 main.addEventListener("click", addToMyRecipes);
@@ -58,28 +38,33 @@ searchBtn.addEventListener("click", searchRecipes);
 showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
 
-//FETCH DATA
+//FETCH REQUESTS
 function getIngredients() {
-  fetch("http://localhost:3001/api/v1/ingredients")
+  return fetch("http://localhost:3001/api/v1/ingredients")
   .then(response => response.json())
-  .then(data => ingredientsData = data)
-  .then(getRecipes)
 }
 
 function getUsers() {
-  fetch("http://localhost:3001/api/v1/users")
+  return fetch("http://localhost:3001/api/v1/users")
   .then(response => response.json())
-  .then(data => users = data)
-  .then(generateUser)
 }
 
 function getRecipes() {
-  fetch("http://localhost:3001/api/v1/recipes")
+  return fetch("http://localhost:3001/api/v1/recipes")
   .then(response => response.json())
-  .then(data => recipes = data)
-  .then(instantiateRecipes)
-  .then(createCards)
-  .then(findTags)
+}
+
+function loadAllData() {
+  Promise.all([getUsers(), getRecipes(), getIngredients()])
+  .then(values => {
+    users = values[0]
+    recipes = values[1]
+    ingredientsData = values[2]
+    generateUser()
+    instantiateRecipes()
+    createCards()
+    findTags()
+  })
 }
 
 
