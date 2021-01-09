@@ -1,7 +1,7 @@
 @import 'variables';
 
 body {
-  background-color: #5B7894;
+  background-color: $steel-blue;
   display: grid;
   font-family: $primary-font;
   grid-template-columns: 1fr 5fr;
@@ -31,7 +31,7 @@ h2 {
 }
 
 h3 {
-  color: #359567;
+  color: $eucalyptus-green;
   cursor: pointer;
   @include setDimensions(17%, auto);
   margin: 5px 5px 10px 0px;
@@ -39,8 +39,8 @@ h3 {
 }
 
 h4 {
-  color: #359567;
-  background-color: #C4EB67;
+  color: $eucalyptus-green;
+  background-color: $inchworm-green;
   border-radius: 3px;
   margin: 10px 0px 0px 0px;
   padding: 1px 4px 1px 4px;
@@ -58,7 +58,7 @@ header {
 }
 
 span {
-  color: #C4EB67;
+  color: $inchworm-green;
   font-weight: 400;
 }
 
@@ -69,7 +69,7 @@ span {
 
 #search {
   border-radius: 15px 15px 15px 15px;
-  border: 3px outset #C4EB67;
+  border: 3px outset $inchworm-green;
   box-shadow: 0px 0px 7px 0px #475d74;
   display: flex;
   flex-direction: row;
@@ -84,8 +84,8 @@ span {
   background: -webkit-gradient( linear,left top, left bottom, color-stop(0, rgb(255, 255, 255)), color-stop(1, rgb(225,225,225)));
   border-radius: 10px 0px 0px 10px;
   border: none;
-  box-shadow: inset -3px -1px 20px 1px #5c7894;
-  color: #5B7894;
+  box-shadow: inset -3px -1px 20px 1px $steel-blue;
+  color: $steel-blue;
   font-family: $primary-font;
   font-size: 42px;
   @include setDimensions(100%, 100%)
@@ -104,7 +104,7 @@ span {
 }
 
 #search-input::placeholder {
-  color: #5B7894;
+  color: $steel-blue;
   font-size: 20px;
   text-align: right;
   text-shadow: none;
@@ -120,14 +120,14 @@ span {
 }
 
 .search-btn {
-  border-left: 3px outset #C4EB67;
+  border-left: 3px outset $inchworm-green;
   border-radius: 0px 15px 15px 0px;
   padding: 1%;
 }
 
 .nav-btn {
   align-items: center;
-  background: #5B7894 no-repeat;
+  background: $steel-blue no-repeat;
   border: none;
   cursor: pointer;
   display: flex;
@@ -143,7 +143,7 @@ span {
   @include setDimensions(auto, 15%);
 
   &:hover {
-    color: #C4EB67;
+    color: $inchworm-green;
     font-size: 14px;
     text-shadow: 0px 2px 4px black;
     transition: .4s ease;
@@ -157,7 +157,7 @@ span {
 }
 
 .saved-ingredients-btn {
-  border-left: 3px solid #C4EB67;
+  border-left: 3px solid $inchworm-green;
 }
 
 .ing-pan-btn {
@@ -234,7 +234,7 @@ main {
 
 .recipe-card {
   background-color: white;
-  border: 2px solid #C4EB67;
+  border: 2px solid $inchworm-green;
   border-radius: 7px;
   cursor: pointer;
   @include setDimensions(270px, 250px);
@@ -259,7 +259,7 @@ main {
   }
 
   &:hover h3 {
-    text-shadow: 0px 0px 4px #C4EB67;
+    text-shadow: 0px 0px 4px $inchworm-green;
     transition: .8s ease;
   }
 }
@@ -290,7 +290,7 @@ main {
 }
 
 .text {
-  background: #359567;
+  background: $eucalyptus-green;
   color: white;
   font-weight: 700;
   font-size: 0px;
@@ -307,7 +307,7 @@ main {
 .show-pantry-recipes-btn,
 .show-all-btn,
 .filter-btn {
-  background-color: #359567;
+  background-color: $eucalyptus-green;
   border: 0;
   border-radius: 3px;
   color: white;
@@ -348,7 +348,7 @@ main {
 }
 
 .drop-menu h2 {
-  color: #359567;
+  color: $eucalyptus-green;
   margin: 0px;
 }
 
@@ -362,7 +362,7 @@ main {
 /* RECIPE INSTRUCTIONS */
 .recipe-instructions {
   background: white;
-  border: 3px solid #C4EB67;
+  border: 3px solid $inchworm-green;
   border-radius: 10px;
   box-shadow: 1px 1px 115px black;
   display: none;
@@ -378,9 +378,9 @@ main {
 
 #exit-recipe-btn {
   background: white;
-  border: 2px double #359567;
+  border: 2px double $eucalyptus-green;
   border-radius: 5px;
-  color: #359567;
+  color: $eucalyptus-green;
   cursor: pointer;
   font-size: 20px;
   font-weight: 700;
@@ -388,7 +388,7 @@ main {
   position: fixed;
   transition: .3s ease;
   &:hover {
-    background: #C4EB67;
+    background: $inchworm-green;
     transition: .3s ease;
   }
 }
@@ -408,7 +408,7 @@ main {
 
 .recipe-instructions h4 {
   background: white;
-  color: #359567;
+  color: $eucalyptus-green;
 }
 
 .recipe-instructions p {
@@ -421,7 +421,7 @@ main {
 
 #overlay {
   filter:alpha(opacity=50);
-  background-color: #5B7894;
+  background-color: $steel-blue;
   @include setDimensions(100%, 100%);
   left:0;
   opacity:0.5;

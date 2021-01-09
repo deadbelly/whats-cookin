@@ -1,7 +1,9 @@
 $primary-font: "Quicksand", sans-serif;
 $secondary-font: "Sulphur Point", sans-serif;
 
-$color-
+$inchworm-green: #C4EB67;
+$steel-blue: #5B7894;
+$eucalyptus-green: #359567;
 
 @mixin setDimensions($height, $width) {
   height: $height;
