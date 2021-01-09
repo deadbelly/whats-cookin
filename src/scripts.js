@@ -318,18 +318,21 @@ function searchRecipes() {
   let searchedRecipes = recipes.filter(recipe => {
     return recipe.name.toLowerCase().includes(searchInput.value.toLowerCase());
   }); 
-  filterSearched(createRecipeObject(searchedRecipes));
+  console.log(searchedRecipes);
+  filterSearchedRecipes(searchedRecipes);
 }
 
 // function searchIngredients() {
 //   showAllRecipes();
-//   let ingredientNames = recipes.forEach(recipe => {
+//   let searchedIngredients = recipes.forEach(recipe => {
 //     return recipe.ingredients.filter(ingredient => {
 //       return ingredient.toLowerCase().includes(searchInput.value.toLowerCase());
+//     });
 //   });
-// }
+//   filteredSearchedIngredients()
+// };
 
-function filterSearched(filtered) {
+function filterSearchedRecipes(filtered) {
   let found = recipes.filter(recipe => {
     let ids = filtered.map(f => f.id);
     return ids.includes(recipe.id)
@@ -346,10 +349,11 @@ function filterSearched(filtered) {
 //   hideUnselectedRecipes(found);
 // }
 
-function createRecipeObject(recipes) {
-  recipes = recipes.map(recipe => new Recipe(recipe, ingredients));
-  return recipes
-}
+//creating a new recipe object with 
+// function createRecipeObject(recipes) {
+//   recipes = recipes.map(recipe => new Recipe(recipe, ingredients));
+//   return recipes
+// }
 
 function toggleMenu() {
   var menuDropdown = document.querySelector(".drop-menu");
