@@ -40,7 +40,7 @@ filterBtn.addEventListener("click", findCheckedBoxes);
 main.addEventListener("click", addToMyRecipes);
 pantryBtn.addEventListener("click", toggleMenu);
 savedRecipesBtn.addEventListener("click", showSavedRecipes);
-searchBtn.addEventListener("click", searchRecipes);
+searchBtn.addEventListener("click", pressEnterSearch);
 showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
 
@@ -229,7 +229,6 @@ function isDescendant(parent, child) {
   return false;
 }
 
-
 function showSavedRecipes() {
   const favoriteRecipes = recipes.filter(recipe => {
     return user.favoriteRecipes.includes(recipe.id)
@@ -299,39 +298,38 @@ function showWelcomeBanner() {
   document.querySelector(".my-recipes-banner").style.display = "none";
 }
 
-// SEARCH RECIPES
+// SEARCH RECIPES & INGREDIENTS
 function pressEnterSearch(event) {
   event.preventDefault();
   searchRecipes();
+  searchIngredients();
 }
 
 function searchRecipes() {
   showAllRecipes();
   let searchedRecipes = recipes.filter(recipe => {
     return recipe.name.toLowerCase().includes(searchInput.value.toLowerCase());
-  }); 
-  filterNonSearched(createRecipeObject(searchedRecipes));
+  });
+  filterSearched(searchedRecipes);
 }
 
-// function searchIngredients() {
-//   showAllRecipes();
-//   let ingredientNames = recipes.forEach(recipe => {
-//     return recipe.ingredients.filter(ingredient => {
-//       return ingredient.toLowerCase().includes(searchInput.value.toLowerCase());
-//   });
-// }
+function searchIngredients() {
+  showAllRecipes();
+  let searchedIngredients = recipes.filter(recipe => {
+    return recipe.ingredients.find(ingredient => {
+      return ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase());
+    });
+  });
+  filterSearched(searchedIngredients);
+}
 
-function filterNonSearched(filtered) {
+function filterSearched(filtered) {
   let found = recipes.filter(recipe => {
     let ids = filtered.map(f => f.id);
-    return !ids.includes(recipe.id)
+    return ids.includes(recipe.id)
   })
-  hideUnselectedRecipes(found);
-}
-
-function createRecipeObject(recipes) {
-  recipes = recipes.map(recipe => new Recipe(recipe, ingredientsData));
-  return recipes
+  clearCards();
+  createCards(found);
 }
 
 function toggleMenu() {
