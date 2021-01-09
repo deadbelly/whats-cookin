@@ -15,19 +15,16 @@ class Recipe {
       acc.push(foundIngredient);
       return acc;
     }, []);
-    // console.log(ingredientList);
     return ingredientList;
   }
-  
+
   listIngredientNames() {
     const ingredientNames = this.ingredients.map(ingredient => ingredient.name);
-    // console.log(ingredientNames);
     return ingredientNames;
   }
 
   calculateIngredientsCost() {
     return this.ingredients.reduce((sum, ingredient) => {
-      // console.log(Math.floor(sum + ingredient.estimatedCostInCents * ingredient.quantity.amount));
       return Math.floor(sum + ingredient.estimatedCostInCents * ingredient.quantity.amount);
     }, 0);
   }
