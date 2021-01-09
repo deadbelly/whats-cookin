@@ -1,0 +1,145 @@
+main {
+  grid-area: main;
+  @include displayFlex(row, center, wrap);
+  align-content: flex-start;
+}
+
+.recipe-card {
+  background-color: white;
+  border: 2px solid $inchworm-green;
+  border-radius: 7px;
+  cursor: pointer;
+  @include setDimensions(270px, 250px);
+  margin: 20px;
+  padding: 15px;
+
+  &:hover .card-photo-preview {
+    opacity: 50%;
+    transition: .8s ease;
+  }
+
+  &:hover .card-photo-preview {
+    opacity: 50%;
+    transition: .8s ease;
+  }
+
+  &:hover .text {
+    font-size: 20px;
+    opacity: 100%;
+    transition: .5s ease;
+    @include setDimensions(auto, 100%)
+  }
+
+  &:hover h3 {
+    text-shadow: 0px 0px 4px $inchworm-green;
+    transition: .8s ease;
+  }
+}
+
+.card-apple-icon {
+  cursor: pointer;
+  float: right;
+  @include setDimensions(50px, 45px);
+  padding-bottom: 10px;
+}
+
+.card-photo-preview {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 7px;
+  cursor: pointer;
+  @include setDimensions(130px, 100%);
+  transition: .8s ease;
+}
+
+.card-photo-container {
+  align-items: center;
+  @include displayFlex(row, center, nowrap);
+  @include setDimensions(130px, auto);
+  position: relative;
+}
+
+.text {
+  background: $eucalyptus-green;
+  color: white;
+  font-weight: 700;
+  font-size: 0px;
+  opacity: 0%;
+  padding: 0%;
+  position: absolute;
+  text-align: center;
+  @include setDimensions(auto, 0%)
+  transition: .5s ease;
+}
+
+/* RECIPE INSTRUCTIONS */
+.recipe-instructions {
+  background: white;
+  border: 3px solid $inchworm-green;
+  border-radius: 10px;
+  box-shadow: 1px 1px 115px black;
+  display: none;
+  @include setDimensions(70%, 70%);
+  margin: 0;
+  overflow-x: scroll;
+  padding: 1% 1% 1% 1%;
+  position: fixed;
+  right: 15%;
+  top: 15%;
+  z-index: 1000;
+}
+
+#exit-recipe-btn {
+  background: white;
+  border: 2px double $eucalyptus-green;
+  border-radius: 5px;
+  color: $eucalyptus-green;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  margin: -4% -3% 2% -1%;
+  position: fixed;
+  transition: .3s ease;
+  &:hover {
+    background: $inchworm-green;
+    transition: .3s ease;
+  }
+}
+
+
+#recipe-title {
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 7px 7px 0px 0px;
+  color: white;
+  font-size: 30px;
+  margin: 0;
+  padding: 5%;
+  text-align: center;
+  text-shadow: 0px 0px 6px black;
+}
+
+.recipe-instructions h4 {
+  background: white;
+  color: $eucalyptus-green;
+}
+
+.recipe-instructions p {
+  margin-left: 2%;
+}
+
+.recipe-instructions ol {
+  margin-right: 2%;
+}
+
+#overlay {
+  filter:alpha(opacity=50);
+  background-color: $steel-blue;
+  @include setDimensions(100%, 100%);
+  left:0;
+  opacity:0.5;
+  position:fixed;
+  top:0;
+  z-index:100;
+}
