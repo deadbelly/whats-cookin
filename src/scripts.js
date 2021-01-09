@@ -320,22 +320,21 @@ function searchRecipes() {
     return recipe.name.toLowerCase().includes(searchInput.value.toLowerCase());
   });
   console.log(searchedRecipes);
-  filterSearchedRecipes(searchedRecipes);
+  filterSearched(searchedRecipes);
 }
 
 function searchIngredients() {
-  // console.log(recipes);
   showAllRecipes();
-  let searchedIngredients = recipes.map(recipe => {
-    return recipe.ingredients.filter(ingredient => {
+  let searchedIngredients = recipes.filter(recipe => {
+    return recipe.ingredients.find(ingredient => {
       return ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase());
     });
   });
   console.log(searchedIngredients);
-  filterSearchedIngredients(searchedIngredients);
+  filterSearched(searchedIngredients);
 };
 
-function filterSearchedRecipes(filtered) {
+function filterSearched(filtered) {
   // console.log(filtered);
   let found = recipes.filter(recipe => {
     let ids = filtered.map(f => f.id);
@@ -345,17 +344,17 @@ function filterSearchedRecipes(filtered) {
   createCards(found);
 }
 
-function filterSearchedIngredients(filtered) {
-  // console.log(filtered);
-  let found = recipes.forEach(recipe => {
-    recipe.ingredients.filter(ingredient => {
-      let ids = filtered.map(f => f.id);
-      return ids.includes(ingredient.id)
-    })
-  })
-  clearCards();
-  createCards(found);
-}
+// function filterSearchedIngredients(filtered) {
+//   // console.log(filtered);
+//   let found = recipes.forEach(recipe => {
+//     recipe.ingredients.filter(ingredient => {
+//       let ids = filtered.map(f => f.id);
+//       return ids.includes(ingredient.id)
+//     })
+//   })
+//   clearCards();
+//   createCards(found);
+// }
 
 // function filterNonSearched(filtered) {
 //   let found = recipes.filter(recipe => {
