@@ -308,13 +308,13 @@ function searchRecipes() {
   filterNonSearched(createRecipeObject(searchedRecipes));
 }
 
-function searchIngredients() {
-  showAllRecipes();
-  let ingredientNames = recipes.forEach(recipe => {
-    return recipe.ingredients.filter(ingredient => {
-      return ingredient.toLowerCase().includes(searchInput.value.toLowerCase());
-  });
-}
+// function searchIngredients() {
+//   showAllRecipes();
+//   let ingredientNames = recipes.forEach(recipe => {
+//     return recipe.ingredients.filter(ingredient => {
+//       return ingredient.toLowerCase().includes(searchInput.value.toLowerCase());
+//   });
+// }
 
 function filterNonSearched(filtered) {
   let found = recipes.filter(recipe => {
