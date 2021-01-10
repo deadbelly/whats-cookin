@@ -1,7 +1,8 @@
-let domUpdates = {
+import User from './user.js';
+
+const domUpdates = {
     // GENERATE A USER ON LOAD
-     generateUser() {
-        user = new User(users[Math.floor(Math.random() * users.length)]);
+     loadUserDom(user) {
         let firstName = user.name.split(" ")[0];
         let welcomeMsg = `
           <div class="welcome-msg">
@@ -9,11 +10,10 @@ let domUpdates = {
           </div>`;
         document.querySelector(".banner-image").insertAdjacentHTML("afterbegin",
           welcomeMsg);
-        findPantryInfo();
       },
 
     // CREATE RECIPE CARDS
-      addToDom(recipeInfo, shortRecipeName, iconStatus) {
+      addToDom(main, recipeInfo, shortRecipeName, iconStatus) {
         let cardHtml = `
           <div class="recipe-card" id=${recipeInfo.id}>
             <h3 maxlength="40">${shortRecipeName}</h3>
@@ -34,10 +34,10 @@ let domUpdates = {
       },
 
     // FILTER BY RECIPE TAGS
-      listTags(allTags) {
+      listTags(allTags, tagList) {
         allTags.forEach(tag => {
           let tagHtml = `<li><input type="checkbox" class="checked-tag" id="${tag}">
-            <label for="${tag}">${capitalize(tag)}</label></li>`;
+            <label for="${tag}">${this.capitalize(tag)}</label></li>`;
           tagList.insertAdjacentHTML("beforeend", tagHtml);
         });
       },
@@ -97,16 +97,15 @@ let domUpdates = {
         document.querySelector(".welcome-msg").style.display = "none";
         document.querySelector(".my-recipes-banner").style.display = "block";
       },
-      
+
        showWelcomeBanner() {
         document.querySelector(".welcome-msg").style.display = "flex";
         document.querySelector(".my-recipes-banner").style.display = "none";
       },
 
       // SEARCH RECIPES & INGREDIENTS
-       toggleMenu() {
+       toggleMenuVis(menuOpen) {
         var menuDropdown = document.querySelector(".drop-menu");
-        menuOpen = !menuOpen;
         if (menuOpen) {
           menuDropdown.style.display = "block";
         } else {
@@ -122,6 +121,12 @@ let domUpdates = {
           document.querySelector(".pantry-list").insertAdjacentHTML("beforeend",
             ingredientHtml);
         });
+      },
+
+      capitalize(words) {
+        return words.split(" ").map(word => {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(" ");
       }
 }
 

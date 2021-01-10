@@ -1,6 +1,6 @@
 import './css/base.scss';
 import './css/styles.scss';
-import {domUpdates} from './domUpdate';
+import domUpdates from './domUpdate';
 
 import User from './user';
 import Recipe from './recipe';
@@ -68,10 +68,23 @@ function loadAllData() {
     recipes = values[1];
     ingredients = values[2];
     generateUser();
+    findPantryInfo();
+    domUpdates.loadUserDom(user);
+    domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
     instantiateRecipes();
     createCards();
     findTags();
   });
+}
+
+function generateUser() {
+  user = new User(users[Math.floor(Math.random() * users.length)]);
+}
+
+//MENU
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  domUpdates.toggleMenuVis(menuOpen);
 }
 
 // CREATE RECIPE CARDS
@@ -86,7 +99,7 @@ function createCards(recipeArray = recipes) {
     if (recipe.name.length > 40) {
       shortRecipeName = recipe.name.substring(0, 40) + "...";
     }
-    addToDom(recipe, shortRecipeName, iconStatus)
+    domUpdates.addToDom(main, recipe, shortRecipeName, iconStatus)
   });
 }
 
@@ -109,13 +122,7 @@ function findTags() {
     });
   });
   tags.sort();
-  listTags(tags);
-}
-
-function capitalize(words) {
-  return words.split(" ").map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }).join(" ");
+  domUpdates.listTags(tags, tagList);
 }
 
 function findCheckedBoxes() {
@@ -149,7 +156,7 @@ function filterRecipes(filtered) {
   let foundRecipes = recipes.filter(recipe => {
     return !filtered.includes(recipe);
   });
-  hideUnselectedRecipes(foundRecipes)
+  domUpdates.hideUnselectedRecipes(foundRecipes)
 }
 
 // FAVORITE RECIPE FUNCTIONALITY
@@ -185,9 +192,9 @@ function showSavedRecipes() {
   const favoriteRecipes = recipes.filter(recipe => {
     return user.favoriteRecipes.includes(recipe.id)
   })
-  clearCards()
+  domUpdates.clearCards()
   createCards(favoriteRecipes)
-  showMyRecipesBanner()
+  domUpdates.showMyRecipesBanner()
 }
 
 // CREATE RECIPE INSTRUCTIONS
@@ -227,14 +234,14 @@ function filterSearched(filtered) {
     let ids = filtered.map(f => f.id);
     return ids.includes(recipe.id)
   })
-  clearCards();
+  domUpdates.clearCards();
   createCards(found);
 }
 
 function showAllRecipes() {
-  clearCards();
+  domUpdates.clearCards();
   createCards();
-  showWelcomeBanner();
+  domUpdates.showWelcomeBanner();
 }
 
 // CREATE AND USE PANTRY
@@ -254,7 +261,6 @@ function findPantryInfo() {
       pantryInfo.push({name: itemInfo.name, count: item.amount});
     }
   });
-  displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
 }
 
 function findCheckedPantryBoxes() {
