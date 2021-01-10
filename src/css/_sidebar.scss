@@ -1,0 +1,22 @@
+aside {
+  background-color: white;
+  @include displayFlex(row, center, nowrap);
+  text-align: center;
+}
+
+.wrap {
+  background-color: white;
+  @include setDimensions(100vh, 200px);
+  padding: 10px;
+  position: relative;
+}
+
+ul {
+  list-style-type: none;
+  text-align: left;
+  padding-left: 35px;
+}
+
+li {
+  margin: 2px;
+}

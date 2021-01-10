@@ -1,0 +1,18 @@
+$primary-font: "Quicksand", sans-serif;
+$secondary-font: "Sulphur Point", sans-serif;
+
+$inchworm-green: #C4EB67;
+$steel-blue: #5B7894;
+$eucalyptus-green: #359567;
+
+@mixin setDimensions($height, $width) {
+  height: $height;
+  width: $width;
+}
+
+@mixin displayFlex($flex-direction, $justify-content, $flex-wrap) {
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  flex-wrap: $flex-wrap
+}

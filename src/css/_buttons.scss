@@ -1,0 +1,26 @@
+.show-pantry-recipes-btn,
+.show-all-btn,
+.filter-btn {
+  background-color: $eucalyptus-green;
+  border: 0;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  font-family: $primary-font;
+  font-size: 12pt;
+  font-weight: bold;
+  padding: 5px 10px 5px 10px;
+
+  &:hover {
+    background-color: #84C8A4;
+  }
+}
+
+.show-pantry-recipes-btn {
+  margin-top: 10px;
+}
+
+.show-all-btn {
+  @include setDimensions(40px, 200px);
+  margin-top: 20px;
+}
