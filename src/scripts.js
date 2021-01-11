@@ -76,6 +76,7 @@ function loadAllData() {
   });
 }
 
+
 function generateUser() {
   user = new User(users[Math.floor(Math.random() * users.length)]);
 }
@@ -170,9 +171,9 @@ function addToMyRecipes() {
       user.removeRecipe('favoriteRecipes', cardId);
     }
   } else if (event.target.id === "exit-recipe-btn") {
-    exitRecipe();
+    domUpdates.exitRecipe(fullRecipeInfo);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
-    openRecipeInfo(event);
+    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes);
   }
 }
 
@@ -194,13 +195,6 @@ function showSavedRecipes() {
   domUpdates.clearCards()
   createCards(favoriteRecipes)
   domUpdates.showMyRecipesBanner()
-}
-
-// CREATE RECIPE INSTRUCTIONS
-function generateIngredients(recipe) {
-  return recipe && recipe.ingredients.map(i => {
-    return `${capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
-  }).join(", ");
 }
 
 // SEARCH RECIPES & INGREDIENTS

@@ -50,17 +50,23 @@ const domUpdates = {
       },
 
     // CREATE RECIPE INSTRUCTIONS
-      openRecipeInfo(event) {
+      openRecipeInfo(event, fullRecipeInfo, recipes) {
         fullRecipeInfo.style.display = "inline";
         let recipeId = event.path.find(e => e.id).id;
         let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-        generateRecipeTitle(recipe, generateIngredients(recipe));
-        addRecipeImage(recipe);
-        generateInstructions(recipe);
+        this.generateRecipeTitle(recipe, this.generateIngredients(recipe), fullRecipeInfo);
+        this.addRecipeImage(recipe);
+        this.generateInstructions(recipe, fullRecipeInfo);
         fullRecipeInfo.insertAdjacentHTML("beforebegin", "<section id='overlay'></div>");
       },
 
-      generateRecipeTitle(recipe, ingredients) {
+      generateIngredients(recipe) {
+        return recipe && recipe.ingredients.map(i => {
+          return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
+        }).join(", ");
+      },
+
+      generateRecipeTitle(recipe, ingredients, fullRecipeInfo) {
         let recipeTitle = `
           <button id="exit-recipe-btn">X</button>
           <h3 id="recipe-title">${recipe.name}</h3>
@@ -73,7 +79,7 @@ const domUpdates = {
         document.getElementById("recipe-title").style.backgroundImage = `url(${recipe.image})`;
       },
 
-       generateInstructions(recipe) {
+       generateInstructions(recipe, fullRecipeInfo) {
         let instructionsList = "";
         let instructions = recipe.instructions.map(i => {
           return i.instruction
@@ -85,7 +91,7 @@ const domUpdates = {
         fullRecipeInfo.insertAdjacentHTML("beforeend", `<ol>${instructionsList}</ol>`);
       },
 
-       exitRecipe() {
+       exitRecipe(fullRecipeInfo) {
         while (fullRecipeInfo.firstChild &&
           fullRecipeInfo.removeChild(fullRecipeInfo.firstChild));
         fullRecipeInfo.style.display = "none";
