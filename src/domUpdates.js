@@ -1,7 +1,7 @@
 import User from './user.js';
 
 const domUpdates = {
-    // GENERATE A USER ON LOAD
+    //WELCOME MESSAGE
      loadUserDom(user) {
         let firstName = user.name.split(" ")[0];
         let welcomeMsg = `
@@ -12,7 +12,7 @@ const domUpdates = {
           welcomeMsg);
       },
 
-    // CREATE RECIPE CARDS
+    //RECIPE CARDS
       addToDom(main, recipeInfo, shortRecipeName, iconStatus) {
         let cardHtml = `
           <div class="recipe-card" id=${recipeInfo.id}>
@@ -33,7 +33,7 @@ const domUpdates = {
         document.querySelectorAll('.recipe-card').forEach(card => card.remove())
       },
 
-    // FILTER BY RECIPE TAGS
+    //FILTER BY RECIPE TAGS
       listTags(allTags, tagList) {
         allTags.forEach(tag => {
           let tagHtml = `<li><input type="checkbox" class="checked-tag" id="${tag}">
@@ -49,7 +49,7 @@ const domUpdates = {
         });
       },
 
-    // CREATE RECIPE INSTRUCTIONS
+    //RECIPE INSTRUCTIONS
       openRecipeInfo(event, fullRecipeInfo, recipes) {
         fullRecipeInfo.style.display = "inline";
         let recipeId = event.path.find(e => e.id).id;
@@ -109,7 +109,7 @@ const domUpdates = {
         document.querySelector(".my-recipes-banner").style.display = "none";
       },
 
-      // SEARCH RECIPES & INGREDIENTS
+      //SEARCH RECIPES & INGREDIENTS
        toggleMenuVis(menuOpen) {
         var menuDropdown = document.querySelector(".drop-menu");
         if (menuOpen) {
@@ -119,7 +119,7 @@ const domUpdates = {
         }
       },
 
-      // CREATE AND USE PANTRY
+      //PANTRY
        displayPantryInfo(pantry) {
         pantry.forEach(ingredient => {
           let ingredientHtml = `<li><input type="checkbox" class="pantry-checkbox" id="${ingredient.name}">
@@ -129,6 +129,7 @@ const domUpdates = {
         });
       },
 
+      //SUPPORT
       capitalize(words) {
         return words.split(" ").map(word => {
           return word.charAt(0).toUpperCase() + word.slice(1);

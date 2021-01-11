@@ -1,5 +1,5 @@
 import './css/styles.scss';
-import domUpdates from './domUpdate';
+import domUpdates from './domUpdates';
 
 import User from './user';
 import Recipe from './recipe';
