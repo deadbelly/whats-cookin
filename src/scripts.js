@@ -28,7 +28,6 @@ const tagList = document.querySelector(".tag-list");
 let pantryInfo = [];
 let menuOpen = false;
 let user;
-let users;
 let recipes;
 let ingredients;
 
@@ -46,13 +45,12 @@ searchForm.addEventListener("submit", pressEnterSearch);
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
   .then(values => {
-    users = generateUser(values[0]);
-    recipes = values[1];
-    ingredients = values[2];
-    findPantryInfo();
+    user = generateUser(values[0]);
     domUpdates.loadUserDom(user);
+    ingredients = values[2];
+    recipes = instantiateRecipes(values[1]);
+    findPantryInfo();
     domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
-    instantiateRecipes();
     createCards();
     findTags();
   });
@@ -60,7 +58,7 @@ function loadAllData() {
 
 
 function generateUser(users) {
-  user = new User(users[Math.floor(Math.random() * users.length)]);
+  return new User(users[Math.floor(Math.random() * users.length)]);
 }
 
 //MENU
@@ -70,8 +68,8 @@ function toggleMenu() {
 }
 
 // CREATE RECIPE CARDS
-function instantiateRecipes() {
-  recipes = recipes.map(recipe => new Recipe(recipe, ingredients));
+function instantiateRecipes(recipes) {
+  return recipes.map(recipe => new Recipe(recipe, ingredients));
 }
 
 function createCards(recipeArray = recipes) {
@@ -95,17 +93,13 @@ function checkIfSaved(recipe) {
 
 // FILTER BY RECIPE TAGS
 function findTags() {
-  let tags = [];
-  recipes.forEach(recipe => {
-    recipe.tags.forEach(tag => {
-      if (!tags.includes(tag)) {
-        tags.push(tag);
-      }
-    });
-  });
-  tags.sort();
+  let tags = new Set(recipes.reduce((tags, recipe) => {
+    return tags.concat(recipe.tags).sort()
+  }, []))
   domUpdates.listTags(tags, tagList);
 }
+
+
 
 function findCheckedBoxes() {
   let tagCheckboxes = document.querySelectorAll(".checked-tag");
