@@ -95,11 +95,9 @@ function checkIfSaved(recipe) {
 function findTags() {
   let tags = new Set(recipes.reduce((tags, recipe) => {
     return tags.concat(recipe.tags).sort()
-  }, []))
+  }, []));
   domUpdates.listTags(tags, tagList);
 }
-
-
 
 function findCheckedBoxes() {
   let tagCheckboxes = document.querySelectorAll(".checked-tag");
@@ -122,7 +120,6 @@ function findTaggedRecipes(selected) {
       }
     })
   });
-  showAllRecipes();
   if (filteredResults.length > 0) {
     filterRecipes(filteredResults);
   }
@@ -181,7 +178,6 @@ function pressEnterSearch(event) {
 }
 
 function searchRecipes() {
-  showAllRecipes();
   let searchedRecipes = recipes.filter(recipe => {
     return recipe.name.toLowerCase().includes(searchInput.value.toLowerCase());
   });
@@ -189,7 +185,6 @@ function searchRecipes() {
 }
 
 function searchIngredients() {
-  showAllRecipes();
   let searchedIngredients = recipes.filter(recipe => {
     return recipe.ingredients.find(ingredient => {
       return ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase());
