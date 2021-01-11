@@ -1,33 +1,32 @@
+import fetchRequests from './fetchRequests';
 import './css/styles.scss';
 import domUpdates from './domUpdates';
 
 import User from './user';
 import Recipe from './recipe';
-import './images/apple-logo-outline.png'
-import './images/apple-logo.png'
-import './images/search.png'
-import './images/cookbook.png'
-import './images/cookbook.png'
-import './images/seasoning.png'
+import './images/apple-logo-outline.png';
+import './images/apple-logo.png';
+import './images/search.png';
+import './images/cookbook.png';
+import './images/cookbook.png';
+import './images/seasoning.png';
 
 
 
-let allRecipesBtn = document.querySelector(".show-all-btn");
-let filterBtn = document.querySelector(".filter-btn");
-let fullRecipeInfo = document.querySelector(".recipe-instructions");
-let main = document.querySelector("main");
-let pantryBtn = document.querySelector(".my-pantry-btn");
-let savedRecipesBtn = document.querySelector(".saved-recipes-btn");
-let searchBtn = document.querySelector(".search-btn");
-let searchForm = document.querySelector("#search");
-let searchInput = document.querySelector("#search-input");
-let showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
-let tagList = document.querySelector(".tag-list");
+const allRecipesBtn = document.querySelector(".show-all-btn");
+const filterBtn = document.querySelector(".filter-btn");
+const fullRecipeInfo = document.querySelector(".recipe-instructions");
+const main = document.querySelector("main");
+const pantryBtn = document.querySelector(".my-pantry-btn");
+const savedRecipesBtn = document.querySelector(".saved-recipes-btn");
+const searchBtn = document.querySelector(".search-btn");
+const searchForm = document.querySelector("#search");
+const searchInput = document.querySelector("#search-input");
+const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
+const tagList = document.querySelector(".tag-list");
+
 let pantryInfo = [];
 let menuOpen = false;
-
-// fetch get requests below
-
 let user;
 let users;
 let recipes;
@@ -44,29 +43,12 @@ searchBtn.addEventListener("click", pressEnterSearch);
 showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
 
-//FETCH REQUESTS
-function getIngredients() {
-  return fetch("http://localhost:3001/api/v1/ingredients")
-  .then(response => response.json());
-}
-
-function getUsers() {
-  return fetch("http://localhost:3001/api/v1/users")
-  .then(response => response.json());
-}
-
-function getRecipes() {
-  return fetch("http://localhost:3001/api/v1/recipes")
-  .then(response => response.json());
-}
-
 function loadAllData() {
-  Promise.all([getUsers(), getRecipes(), getIngredients()])
+  Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
   .then(values => {
-    users = values[0];
+    users = generateUser(values[0]);
     recipes = values[1];
     ingredients = values[2];
-    generateUser();
     findPantryInfo();
     domUpdates.loadUserDom(user);
     domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
@@ -77,7 +59,7 @@ function loadAllData() {
 }
 
 
-function generateUser() {
+function generateUser(users) {
   user = new User(users[Math.floor(Math.random() * users.length)]);
 }
 
