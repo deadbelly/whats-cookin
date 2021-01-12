@@ -53,9 +53,10 @@ function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
   .then(values => {
     user = generateUser(values[0]);
+    user.pantry = generateUserPantry(user);
     domUpdates.loadUserDom(user);
-    ingredients = values[2];
-    recipes = instantiateRecipes(values[1]);
+    ingredients = generateIngredients(values[2]);
+    recipes = generateRecipes(values[1]);
     findPantryInfo();
     domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
     createCards();
@@ -68,8 +69,16 @@ function generateUser(users) {
   return new User(users[Math.floor(Math.random() * users.length)]);
 }
 
-function instantiateRecipes(recipes) {
+function generateRecipes(recipes) {
   return recipes.map(recipe => new Recipe(recipe, ingredients));
+}
+
+function generateUserPantry(user) {
+  return new Pantry(user);
+}
+
+function generateIngredients(ingredients) {
+  return ingredients.map(ingredient => new Ingredient(ingredient))
 }
 
 //CALL domUpdates
@@ -208,7 +217,7 @@ function filterRecipes(recipeArray) {
 
 // CREATE AND USE PANTRY
 function findPantryInfo() {
-  user.pantry.forEach(item => {
+  user.pantry.pantry.forEach(item => {
     let itemInfo = ingredients.find(ingredient => {
       return ingredient.id === item.ingredient;
     });
