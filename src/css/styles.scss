@@ -81,7 +81,7 @@ h4 {
   .wrap {
     background-color: white;
     @include setDimensions(auto, auto);
-    // @include displayFlex(row, center, nowrap);
+    @include displayFlex(column, center, nowrap);
     padding: 10px;
     position: relative;
   }
