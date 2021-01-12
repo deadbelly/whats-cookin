@@ -37,16 +37,20 @@ describe('Pantry', () => {
     });
   });
 
-  it('pantry should be able to indicate if a user can cook a given meal', () => {
-    expect(pantry.cookMeal(recipeData[1])).to.eq(true);
+  it.only('pantry should be able to indicate if a user can cook a given meal', () => {
+    pantry.cookMeal(recipeData[1]);
+    expect(pantry.ingredients[1]).to.eql(
+    {id: 2,
+    amount: 4})
+  });
+
+  it(`if there are not enough ingredients, pantry should return cost of ingredients needed to cook a meal`, () => {
+    expect(pantry.cookMeal(recipeData[0])).to.eq(12);
   });
 
   it('should return a list of ingredients needed if pantry does not have enough to cook a meal', () => {
     expect(pantry.returnListOfIngredientsNeeded(recipeData[0])).to.eq('parmesan');
   });
 
-  it(`if there are not enough ingredients, pantry should return cost of ingredients needed to cook a meal`, () => {
-    expect(pantry.cookMeal(recipedata[0])).to.eq(12);
-  });
 
 });

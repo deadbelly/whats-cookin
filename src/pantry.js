@@ -1,4 +1,4 @@
-class Pantry {
+ class Pantry {
   constructor(userPantry, allIngredients) {
     this.ingredients = userPantry;
     this.completeIngredients = this.compileIngredientsData(allIngredients);
@@ -19,21 +19,82 @@ class Pantry {
     return fullIngredientList;
   }
 
-  // cookMeal(recipe) {
-  //
-  // }
+  cookMeal(recipeToCook) {
+    let recipe = recipeToCook
+    // console.log(recipe);
+    recipe.ingredients.forEach(recipeIngredient => {
+      this.ingredients.forEach(pantryIngredient => {
+        if (pantryIngredient.id === recipeIngredient.id) {
+          recipeIngredient.quantity.amount -= pantryIngredient.amount
+        }
+      })
+    })
+    // console.log(recipe.ingredients[0].quantity.amount)
+    recipe = recipe.ingredients.filter(ingredient => ingredient.quantity.amount > 0)
+    if (!recipe.length) {
+      this.removeIngredientsFromUserPantry(recipeToCook)
+    }
+    else
+    {
+      return this.failureMessage(recipe)
+    }
+  }
 
+  failureMessage(recipe) {
+    let message = ' '
+    recipe.ingredients.forEach(ingredient => {
+    //add name and how much we need to string
+  })
+  //add 'the remaining ingredients cost ${recipe.getCost}'
+  return message
+  }
 
+  removeIngredientsFromUserPantry(recipe) {
+    // console.log(recipe)
+    recipe.ingredients.forEach(recipeIng => {
+      this.ingredients.forEach(userIng => {
+        if (recipeIng.id === userIng.id) {
+          userIng.amount -= recipeIng.quantity.amount;
+          console.log(userIng.amount);
+        }
+      })
+    })
+  }
 };
 
 
 
-///     /*what? an array of ingredient objects and a recipe object
-//     want? to return true if there are enough ingredients in the user's Pantry
-//     to cook the meal, or the cost of the remaining ingredients needed to cook that meal
-//     methods?
-//     how?
-//     */
-// //   }
+
+
+
+  // getValidIngredientsIds(recipe) {
+  //   const validIngredients = [];
+  //   recipe.ingredients.forEach(recipeIng => {
+  //     this.ingredients.forEach(userIng => {
+  //       if (recipeIng.id === userIng.id) {
+  //         validIngredients.push(userIng.id);
+  //       }
+  //     })
+  //   })
+  //   return validIngredients
+  // }
+  //
+  // getInvalidIngredientsIds(recipe) {
+  //   const validIngredients = getValidIngredients(recipe);
+  //   const invalidIngredients = [];
+  //   recipe.ingredients.forEach(recipeIng => {
+  //     this.ingredients.forEach(userIng => {
+  //       if (!validIngredients.includes(recipeIng.id) && !invalidIngredients.includes(recipeIng.id)) {
+  //         invalidIngredients.push(recipeIng.id);
+  //       }
+  //     })
+  //   })
+  //   return invalidIngredients
+  // }
+
+
+
+
+
 
 module.exports = Pantry;
