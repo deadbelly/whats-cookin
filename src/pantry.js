@@ -1,11 +1,9 @@
 class Pantry {
   constructor(user) {
     this.pantry = user.pantry;
-    // console.log('pantry right away', this.pantry)
   }
 
   findIngredientById(id) {
-    // console.log(id);
     return this.pantry.find(ingredient => ingredient.id === id)
   }
 
@@ -34,8 +32,6 @@ class Pantry {
       return missingIngredients;
     } else {
       this.removeCookedIngredients(recipe)
-      // console.log('recipe after removing ings', recipe.ingredients)
-      // console.log('pantry after removing ings', this.pantry)
     }
   }
 }

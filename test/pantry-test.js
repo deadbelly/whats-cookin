@@ -31,15 +31,6 @@ describe('Pantry', () => {
     expect(pantry.pantry).to.eql(user.pantry);
   });
 
-  // it('should initialize with an array of ingredients with additional properties of name and cost in cents', () => {
-  //   expect(pantry.compileIngredientsData(ingredients)[0]).to.eql({
-  //     id: 1,
-  //     name: 'chicken breast',
-  //     estimatedCostInCents: 10,
-  //     amount: 2
-  //   });
-  // });
-
   it('pantry should be able to indicate if a user can cook a given meal', () => {
     pantry.canCook(recipeData[1]);
     expect(pantry.pantry).to.eql(
@@ -58,10 +49,5 @@ describe('Pantry', () => {
 ]
 );
   });
-
-  // it('should return a list of ingredients needed if pantry does not have enough to cook a meal', () => {
-  //   expect(pantry.returnListOfIngredientsNeeded(recipeData[0])).to.eq('parmesan');
-  // });
-
 
 });
