@@ -29,6 +29,7 @@ const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 let pantryInfo = [];
 let viewFavorites = false;
 let menuOpen = false;
+let viewTags = false;
 let user;
 let recipes;
 let ingredients;
@@ -108,8 +109,8 @@ function toggleMenu() {
 }
 
 function toggleFilter() {
-  menuOpen = !menuOpen;
-  domUpdates.toggleFilterVis(menuOpen);
+  viewTags = !viewTags;
+  domUpdates.toggleFilterVis(viewTags);
 }
 
 function showSavedRecipes() {

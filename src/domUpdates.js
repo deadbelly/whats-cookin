@@ -49,12 +49,12 @@ const domUpdates = {
         });
       },
 
-      toggleFilterVis(menuOpen) {
-        var menuDropdown = document.querySelector(".tag-list");
-        if (menuOpen) {
-          menuDropdown.style.display = "block";
+      toggleFilterVis(viewTags) {
+        var tagDropdown = document.querySelector(".tag-list");
+        if (viewTags) {
+          tagDropdown.style.display = "block";
         } else {
-          menuDropdown.style.display = "none";
+          tagDropdown.style.display = "none";
         }
       },
 
