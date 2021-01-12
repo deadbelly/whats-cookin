@@ -72,31 +72,31 @@ function createCards() {
   let recipeArray = filterRecipes(recipes);
   recipeArray.forEach(recipe => {
     let shortRecipeName = recipe.name;
-    let iconStatus = checkIfSaved(recipe)
+    let iconStatus = checkIfSaved(recipe);
     if (recipe.name.length > 40) {
       shortRecipeName = recipe.name.substring(0, 40) + "...";
     }
-    domUpdates.addToDom(main, recipe, shortRecipeName, iconStatus)
+    domUpdates.addToDom(main, recipe, shortRecipeName, iconStatus);
   });
 }
 
 function reloadRecipes() {
-  domUpdates.clearCards()
-  createCards()
+  domUpdates.clearCards();
+  createCards();
 }
 
 function findTags() {
   let tags = new Set(recipes.reduce((tags, recipe) => {
-    return tags.concat(recipe.tags).sort()
+    return tags.concat(recipe.tags).sort();
   }, []));
   domUpdates.listTags(tags, tagList);
 }
 
 function checkIfSaved(recipe) {
   if (user.favoriteRecipes.includes(recipe.id)) {
-    return '<img src="./images/apple-logo.png" alt="filled apple icon" class="card-apple-icon">'
+    return '<img src="./images/apple-logo.png" alt="filled apple icon" class="card-apple-icon">';
   } else {
-    return '<img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">'
+    return '<img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">';
   }
 }
 
@@ -106,14 +106,14 @@ function toggleMenu() {
 }
 
 function showSavedRecipes() {
-  viewFavorites = true
-  reloadRecipes()
-  domUpdates.showMyRecipesBanner()
+  viewFavorites = true;
+  reloadRecipes();
+  domUpdates.showMyRecipesBanner();
 }
 
 function showAllRecipes() {
-  viewFavorites = false
-  reloadRecipes()
+  viewFavorites = false;
+  reloadRecipes();
   domUpdates.showWelcomeBanner();
 }
 
@@ -121,7 +121,7 @@ function showAllRecipes() {
 // FAVORITE RECIPE FUNCTIONALITY
 function addToMyRecipes() {
   if (event.target.className === "card-apple-icon") {
-    let cardId = parseInt(event.target.closest(".recipe-card").id)
+    let cardId = parseInt(event.target.closest(".recipe-card").id);
     if (!user.favoriteRecipes.includes(cardId)) {
       event.target.src = "../images/apple-logo.png";
       user.addRecipe('favoriteRecipes', cardId);
@@ -150,20 +150,20 @@ function isDescendant(parent, child) {
 //FILTERING AND SEARCHING
 function pressEnterSearch(event) {
   event.preventDefault();
-  activeSearch = searchInput.value.toLowerCase()
-  reloadRecipes()
+  activeSearch = searchInput.value.toLowerCase();
+  reloadRecipes();
 }
 
 function filterRecipesByFavorites(recipeArray) {
   recipeArray = recipeArray.filter(recipe => {
-    return user.favoriteRecipes.includes(recipe.id)
+    return user.favoriteRecipes.includes(recipe.id);
   })
-  return recipeArray
+  return recipeArray;
 }
 
 function findSelectedTags() {
   let tagCheckboxes = document.querySelectorAll(".checked-tag");
-  let checkboxInfo = Array.from(tagCheckboxes)
+  let checkboxInfo = Array.from(tagCheckboxes);
   return checkboxInfo.filter(box => {
     return box.checked;
   })
@@ -171,9 +171,9 @@ function findSelectedTags() {
 
 function filterRecipesByTag(recipeArray, selectedTags) {
   selectedTags.forEach(tag => {
-    recipeArray = recipeArray.filter(recipe => recipe.tags.includes(tag.id))
+    recipeArray = recipeArray.filter(recipe => recipe.tags.includes(tag.id));
   })
-  return recipeArray
+  return recipeArray;
 }
 
 function filterRecipesBySearch(recipeArray, search) {
@@ -188,10 +188,10 @@ function filterRecipes(recipeArray) {
     recipeArray = filterRecipesBySearch(recipeArray, activeSearch);
   }
   if(findSelectedTags()) {
-    recipeArray = filterRecipesByTag(recipeArray, findSelectedTags())
+    recipeArray = filterRecipesByTag(recipeArray, findSelectedTags());
   }
   if (viewFavorites) {
-    recipeArray = filterRecipesByFavorites(recipeArray)
+    recipeArray = filterRecipesByFavorites(recipeArray);
   }
   return recipeArray
 }
@@ -217,7 +217,7 @@ function findPantryInfo() {
 
 function findCheckedPantryBoxes() {
   let pantryCheckboxes = document.querySelectorAll(".pantry-checkbox");
-  let pantryCheckboxInfo = Array.from(pantryCheckboxes)
+  let pantryCheckboxInfo = Array.from(pantryCheckboxes);
   let selectedIngredients = pantryCheckboxInfo.filter(box => {
     return box.checked;
   })
