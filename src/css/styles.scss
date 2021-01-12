@@ -124,5 +124,19 @@ h4 {
       padding: 0% 0%;
       @include setDimensions(auto, 100%);
     }
+
+    .drop-menu {
+      align-items: center;
+      background-color: #DAE4EE;
+      display: none;
+      @include setDimensions(600px, 250px);
+      margin-left: 15%;
+      margin-top: 210px;
+      overflow: scroll;
+      padding: 12px;
+      position: absolute;
+      text-align: center;
+      z-index: 3;
+    }
   }
 }
