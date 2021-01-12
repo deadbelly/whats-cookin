@@ -11,23 +11,26 @@ class Recipe {
   findIngredients(allIngredients, recipeIngredients) {
     const ingredientList = recipeIngredients.reduce((acc, i) => {
       const foundIngredient = allIngredients.find(ingredient => ingredient.id === i.id);
-      foundIngredient.quantity = i.quantity;
-      acc.push(foundIngredient);
+      // foundIngredient.quantity = i.quantity;
+      const completeIngredient = {
+        id: i.id,
+        name: foundIngredient.name,
+        estimatedCostInCents: foundIngredient.estimatedCostInCents,
+        quantity: i.quantity
+      }
+      acc.push(completeIngredient);
       return acc;
     }, []);
-    // console.log(ingredientList);
     return ingredientList;
   }
 
   listIngredientNames() {
     const ingredientNames = this.ingredients.map(ingredient => ingredient.name);
-    // console.log(ingredientNames);
     return ingredientNames;
   }
 
   calculateIngredientsCost() {
     return this.ingredients.reduce((sum, ingredient) => {
-      // console.log(Math.floor(sum + ingredient.estimatedCostInCents * ingredient.quantity.amount));
       return Math.floor(sum + ingredient.estimatedCostInCents * ingredient.quantity.amount);
     }, 0);
   }
