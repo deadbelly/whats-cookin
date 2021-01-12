@@ -1,7 +1,7 @@
 import User from './user.js';
 
 const domUpdates = {
-    // GENERATE A USER ON LOAD
+    //WELCOME MESSAGE
      loadUserDom(user) {
         let firstName = user.name.split(" ")[0];
         let welcomeMsg = `
@@ -12,7 +12,7 @@ const domUpdates = {
           welcomeMsg);
       },
 
-    // CREATE RECIPE CARDS
+    //RECIPE CARDS
       addToDom(main, recipeInfo, shortRecipeName, iconStatus) {
         let cardHtml = `
           <div class="recipe-card" id=${recipeInfo.id}>
@@ -33,7 +33,7 @@ const domUpdates = {
         document.querySelectorAll('.recipe-card').forEach(card => card.remove())
       },
 
-    // FILTER BY RECIPE TAGS
+    //FILTER BY RECIPE TAGS
       listTags(allTags, tagList) {
         allTags.forEach(tag => {
           let tagHtml = `<li><input type="checkbox" class="checked-tag" id="${tag}">
@@ -49,18 +49,24 @@ const domUpdates = {
         });
       },
 
-    // CREATE RECIPE INSTRUCTIONS
-      openRecipeInfo(event) {
+    //RECIPE INSTRUCTIONS
+      openRecipeInfo(event, fullRecipeInfo, recipes) {
         fullRecipeInfo.style.display = "inline";
         let recipeId = event.path.find(e => e.id).id;
         let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-        generateRecipeTitle(recipe, generateIngredients(recipe));
-        addRecipeImage(recipe);
-        generateInstructions(recipe);
+        this.generateRecipeTitle(recipe, this.generateIngredients(recipe), fullRecipeInfo);
+        this.addRecipeImage(recipe);
+        this.generateInstructions(recipe, fullRecipeInfo);
         fullRecipeInfo.insertAdjacentHTML("beforebegin", "<section id='overlay'></div>");
       },
 
-      generateRecipeTitle(recipe, ingredients) {
+      generateIngredients(recipe) {
+        return recipe && recipe.ingredients.map(i => {
+          return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
+        }).join(", ");
+      },
+
+      generateRecipeTitle(recipe, ingredients, fullRecipeInfo) {
         let recipeTitle = `
           <button id="exit-recipe-btn">X</button>
           <h3 id="recipe-title">${recipe.name}</h3>
@@ -73,7 +79,7 @@ const domUpdates = {
         document.getElementById("recipe-title").style.backgroundImage = `url(${recipe.image})`;
       },
 
-       generateInstructions(recipe) {
+       generateInstructions(recipe, fullRecipeInfo) {
         let instructionsList = "";
         let instructions = recipe.instructions.map(i => {
           return i.instruction
@@ -85,7 +91,7 @@ const domUpdates = {
         fullRecipeInfo.insertAdjacentHTML("beforeend", `<ol>${instructionsList}</ol>`);
       },
 
-       exitRecipe() {
+       exitRecipe(fullRecipeInfo) {
         while (fullRecipeInfo.firstChild &&
           fullRecipeInfo.removeChild(fullRecipeInfo.firstChild));
         fullRecipeInfo.style.display = "none";
@@ -103,7 +109,7 @@ const domUpdates = {
         document.querySelector(".my-recipes-banner").style.display = "none";
       },
 
-      // SEARCH RECIPES & INGREDIENTS
+      //SEARCH RECIPES & INGREDIENTS
        toggleMenuVis(menuOpen) {
         var menuDropdown = document.querySelector(".drop-menu");
         if (menuOpen) {
@@ -113,7 +119,7 @@ const domUpdates = {
         }
       },
 
-      // CREATE AND USE PANTRY
+      //PANTRY
        displayPantryInfo(pantry) {
         pantry.forEach(ingredient => {
           let ingredientHtml = `<li><input type="checkbox" class="pantry-checkbox" id="${ingredient.name}">
@@ -123,6 +129,7 @@ const domUpdates = {
         });
       },
 
+      //SUPPORT
       capitalize(words) {
         return words.split(" ").map(word => {
           return word.charAt(0).toUpperCase() + word.slice(1);
