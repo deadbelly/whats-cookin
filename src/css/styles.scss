@@ -52,3 +52,39 @@ h4 {
   padding: 1px 4px 1px 4px;
   @include setDimensions(auto, max-content);
 }
+
+@media screen and (max-width: 800px) {
+  body {
+    background-color: $steel-blue;
+    display: grid;
+    font-family: $primary-font;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "header header"
+      "image image"
+      "aside aside"
+      "main main";
+    @include setDimensions(100vh, auto)
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: auto;
+  }
+
+  aside {
+    background-color: white;
+    grid-area: aside;
+    @include displayFlex(row, center, nowrap);
+    text-align: center;
+  }
+  
+  .wrap {
+    background-color: white;
+    @include setDimensions(auto, auto);
+    // @include displayFlex(row, center, nowrap);
+    padding: 10px;
+    position: relative;
+  }
+
+ 
+}
