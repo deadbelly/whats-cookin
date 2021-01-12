@@ -86,5 +86,29 @@ h4 {
     position: relative;
   }
 
- 
+  @media screen and (max-width: 600px) {
+    body {
+      background-color: $steel-blue;
+      display: grid;
+      font-family: $primary-font;
+      grid-template-columns: 1fr 5fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "header header"
+        "image image"
+        "aside aside"
+        "main main";
+      @include setDimensions(100vh, auto)
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: auto;
+    }
+
+    header {
+      @include displayFlex(row, center, wrap);
+      grid-area: header;
+      padding: 0% 0%;
+      @include setDimensions(auto, 100%);
+    }
+  }
 }
