@@ -49,6 +49,15 @@ const domUpdates = {
         });
       },
 
+      toggleFilterVis(menuOpen) {
+        var menuDropdown = document.querySelector(".tag-list");
+        if (menuOpen) {
+          menuDropdown.style.display = "block";
+        } else {
+          menuDropdown.style.display = "none";
+        }
+      },
+
     //RECIPE INSTRUCTIONS
       openRecipeInfo(event, fullRecipeInfo, recipes) {
         fullRecipeInfo.style.display = "inline";
