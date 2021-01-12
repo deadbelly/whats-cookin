@@ -26,15 +26,17 @@ const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
 
 let pantryInfo = [];
+let viewFavorites = false;
 let menuOpen = false;
 let user;
 let recipes;
 let ingredients;
+let activeSearch;
 
 
 window.addEventListener("load", loadAllData);
 allRecipesBtn.addEventListener("click", showAllRecipes);
-filterBtn.addEventListener("click", findCheckedBoxes);
+filterBtn.addEventListener("click", reloadRecipes);
 main.addEventListener("click", addToMyRecipes);
 pantryBtn.addEventListener("click", toggleMenu);
 savedRecipesBtn.addEventListener("click", showSavedRecipes);
@@ -56,23 +58,18 @@ function loadAllData() {
   });
 }
 
-
+//LOAD DATA MODEL
 function generateUser(users) {
   return new User(users[Math.floor(Math.random() * users.length)]);
 }
 
-//MENU
-function toggleMenu() {
-  menuOpen = !menuOpen;
-  domUpdates.toggleMenuVis(menuOpen);
-}
-
-// CREATE RECIPE CARDS
 function instantiateRecipes(recipes) {
   return recipes.map(recipe => new Recipe(recipe, ingredients));
 }
 
-function createCards(recipeArray = recipes) {
+//CALL domUpdates
+function createCards() {
+  let recipeArray = filterRecipes(recipes);
   recipeArray.forEach(recipe => {
     let shortRecipeName = recipe.name;
     let iconStatus = checkIfSaved(recipe)
@@ -83,6 +80,18 @@ function createCards(recipeArray = recipes) {
   });
 }
 
+function reloadRecipes() {
+  domUpdates.clearCards()
+  createCards()
+}
+
+function findTags() {
+  let tags = new Set(recipes.reduce((tags, recipe) => {
+    return tags.concat(recipe.tags).sort()
+  }, []));
+  domUpdates.listTags(tags, tagList);
+}
+
 function checkIfSaved(recipe) {
   if (user.favoriteRecipes.includes(recipe.id)) {
     return '<img src="./images/apple-logo.png" alt="filled apple icon" class="card-apple-icon">'
@@ -91,46 +100,23 @@ function checkIfSaved(recipe) {
   }
 }
 
-// FILTER BY RECIPE TAGS
-function findTags() {
-  let tags = new Set(recipes.reduce((tags, recipe) => {
-    return tags.concat(recipe.tags).sort()
-  }, []));
-  domUpdates.listTags(tags, tagList);
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  domUpdates.toggleMenuVis(menuOpen);
 }
 
-function findCheckedBoxes() {
-  let tagCheckboxes = document.querySelectorAll(".checked-tag");
-  let checkboxInfo = Array.from(tagCheckboxes)
-  let selectedTags = checkboxInfo.filter(box => {
-    return box.checked;
-  })
-  findTaggedRecipes(selectedTags);
+function showSavedRecipes() {
+  viewFavorites = true
+  reloadRecipes()
+  domUpdates.showMyRecipesBanner()
 }
 
-function findTaggedRecipes(selected) {
-  let filteredResults = [];
-  selected.forEach(tag => {
-    let allRecipes = recipes.filter(recipe => {
-      return recipe.tags.includes(tag.id);
-    });
-    allRecipes.forEach(recipe => {
-      if (!filteredResults.includes(recipe)) {
-        filteredResults.push(recipe);
-      }
-    })
-  });
-  if (filteredResults.length > 0) {
-    filterRecipes(filteredResults);
-  }
+function showAllRecipes() {
+  viewFavorites = false
+  reloadRecipes()
+  domUpdates.showWelcomeBanner();
 }
 
-function filterRecipes(filtered) {
-  let foundRecipes = recipes.filter(recipe => {
-    return !filtered.includes(recipe);
-  });
-  domUpdates.hideUnselectedRecipes(foundRecipes)
-}
 
 // FAVORITE RECIPE FUNCTIONALITY
 function addToMyRecipes() {
@@ -161,51 +147,53 @@ function isDescendant(parent, child) {
   return false;
 }
 
-function showSavedRecipes() {
-  const favoriteRecipes = recipes.filter(recipe => {
-    return user.favoriteRecipes.includes(recipe.id)
-  })
-  domUpdates.clearCards()
-  createCards(favoriteRecipes)
-  domUpdates.showMyRecipesBanner()
-}
-
-// SEARCH RECIPES & INGREDIENTS
+//FILTERING AND SEARCHING
 function pressEnterSearch(event) {
   event.preventDefault();
-  searchRecipes();
-  searchIngredients();
+  activeSearch = searchInput.value.toLowerCase()
+  reloadRecipes()
 }
 
-function searchRecipes() {
-  let searchedRecipes = recipes.filter(recipe => {
-    return recipe.name.toLowerCase().includes(searchInput.value.toLowerCase());
-  });
-  filterSearched(searchedRecipes);
-}
-
-function searchIngredients() {
-  let searchedIngredients = recipes.filter(recipe => {
-    return recipe.ingredients.find(ingredient => {
-      return ingredient.name.toLowerCase().includes(searchInput.value.toLowerCase());
-    });
-  });
-  filterSearched(searchedIngredients);
-}
-
-function filterSearched(filtered) {
-  let found = recipes.filter(recipe => {
-    let ids = filtered.map(f => f.id);
-    return ids.includes(recipe.id)
+function filterRecipesByFavorites(recipeArray) {
+  recipeArray = recipeArray.filter(recipe => {
+    return user.favoriteRecipes.includes(recipe.id)
   })
-  domUpdates.clearCards();
-  createCards(found);
+  return recipeArray
 }
 
-function showAllRecipes() {
-  domUpdates.clearCards();
-  createCards();
-  domUpdates.showWelcomeBanner();
+function findSelectedTags() {
+  let tagCheckboxes = document.querySelectorAll(".checked-tag");
+  let checkboxInfo = Array.from(tagCheckboxes)
+  return checkboxInfo.filter(box => {
+    return box.checked;
+  })
+}
+
+function filterRecipesByTag(recipeArray, selectedTags) {
+  selectedTags.forEach(tag => {
+    recipeArray = recipeArray.filter(recipe => recipe.tags.includes(tag.id))
+  })
+  return recipeArray
+}
+
+function filterRecipesBySearch(recipeArray, search) {
+  recipeArray = recipeArray.filter(recipe => {
+    return (recipe.listIngredientNames().find(ingredient => ingredient.includes(search)) ||
+    recipe.name.toLowerCase().includes(search))});
+  return recipeArray
+}
+
+function filterRecipes(recipeArray) {
+  if (activeSearch) {
+    recipeArray = filterRecipesBySearch(recipeArray, activeSearch);
+  }
+  if(findSelectedTags()) {
+    recipeArray = filterRecipesByTag(recipeArray, findSelectedTags())
+  }
+  if (viewFavorites) {
+    recipeArray = filterRecipesByFavorites(recipeArray)
+  }
+  return recipeArray
 }
 
 // CREATE AND USE PANTRY

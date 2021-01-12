@@ -18,7 +18,7 @@ class Recipe {
     // console.log(ingredientList);
     return ingredientList;
   }
-  
+
   listIngredientNames() {
     const ingredientNames = this.ingredients.map(ingredient => ingredient.name);
     // console.log(ingredientNames);
