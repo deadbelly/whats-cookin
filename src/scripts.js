@@ -4,6 +4,8 @@ import domUpdates from './domUpdates';
 
 import User from './user';
 import Recipe from './recipe';
+import Pantry from './pantry';
+import Ingredient from './ingredient';
 import './images/apple-logo-outline.png';
 import './images/apple-logo.png';
 import './images/search.png';
