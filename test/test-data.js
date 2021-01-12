@@ -72,7 +72,7 @@ const recipeData = [
 ]
 
 
-const ingredients = [
+const ingredientsData = [
   {
     id: 1,
     name: 'chicken breast',
@@ -104,4 +104,4 @@ const ingredients = [
   }
 ]
 
-export {users, recipeData, ingredients};
+export {users, recipeData, ingredientsData};

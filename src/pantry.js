@@ -1,100 +1,43 @@
- class Pantry {
-  constructor(userPantry, allIngredients) {
-    this.ingredients = userPantry;
-    this.completeIngredients = this.compileIngredientsData(allIngredients);
+class Pantry {
+  constructor(user) {
+    this.pantry = user.pantry;
+    // console.log('pantry right away', this.pantry)
   }
 
-  compileIngredientsData(allIngredients) {
-    const fullIngredientList = this.ingredients.reduce((acc, i) => {
-      const matchingIngredient = allIngredients.find(ingredient => ingredient.id === i.id);
-      const finalIngredient = {
-        id: i.id,
-        name: matchingIngredient.name,
-        estimatedCostInCents: matchingIngredient.estimatedCostInCents,
-        amount: i.amount
-      }
-      acc.push(finalIngredient);
-      return acc;
-    }, []);
-    return fullIngredientList;
+  findIngredientById(id) {
+    // console.log(id);
+    return this.pantry.find(ingredient => ingredient.id === id)
   }
 
-  cookMeal(recipeToCook) {
-    let recipe = recipeToCook
-    // console.log(recipe);
-    recipe.ingredients.forEach(recipeIngredient => {
-      this.ingredients.forEach(pantryIngredient => {
-        if (pantryIngredient.id === recipeIngredient.id) {
-          recipeIngredient.quantity.amount -= pantryIngredient.amount
-        }
-      })
+  findMissingIngredients(recipe) {
+    let missingIngredients = recipe.ingredients.filter(ingredient => {
+      return (!this.findIngredientById(ingredient.id) ||
+      ingredient.quantity.amount > this.findIngredientById(ingredient.id).amount)
     })
-    // console.log(recipe.ingredients[0].quantity.amount)
-    recipe = recipe.ingredients.filter(ingredient => ingredient.quantity.amount > 0)
-    if (!recipe.length) {
-      this.removeIngredientsFromUserPantry(recipeToCook)
-    }
-    else
-    {
-      return this.failureMessage(recipe)
-    }
+    missingIngredients.forEach(missingIng => {
+      missingIng.cost = Math.floor(missingIng.estimatedCostInCents * missingIng.quantity.amount);
+      delete missingIng.estimatedCostInCents;
+    })
+    return missingIngredients;
   }
 
-  failureMessage(recipe) {
-    let message = ' '
+  removeCookedIngredients(recipe) {
     recipe.ingredients.forEach(ingredient => {
-    //add name and how much we need to string
-  })
-  //add 'the remaining ingredients cost ${recipe.getCost}'
-  return message
-  }
-
-  removeIngredientsFromUserPantry(recipe) {
-    // console.log(recipe)
-    recipe.ingredients.forEach(recipeIng => {
-      this.ingredients.forEach(userIng => {
-        if (recipeIng.id === userIng.id) {
-          userIng.amount -= recipeIng.quantity.amount;
-          console.log(userIng.amount);
-        }
-      })
+      this.findIngredientById(ingredient.id).amount -= ingredient.quantity.amount
     })
   }
-};
 
-
-
-
-
-
-  // getValidIngredientsIds(recipe) {
-  //   const validIngredients = [];
-  //   recipe.ingredients.forEach(recipeIng => {
-  //     this.ingredients.forEach(userIng => {
-  //       if (recipeIng.id === userIng.id) {
-  //         validIngredients.push(userIng.id);
-  //       }
-  //     })
-  //   })
-  //   return validIngredients
-  // }
-  //
-  // getInvalidIngredientsIds(recipe) {
-  //   const validIngredients = getValidIngredients(recipe);
-  //   const invalidIngredients = [];
-  //   recipe.ingredients.forEach(recipeIng => {
-  //     this.ingredients.forEach(userIng => {
-  //       if (!validIngredients.includes(recipeIng.id) && !invalidIngredients.includes(recipeIng.id)) {
-  //         invalidIngredients.push(recipeIng.id);
-  //       }
-  //     })
-  //   })
-  //   return invalidIngredients
-  // }
-
-
-
-
-
+  canCook(recipe) {
+    let missingIngredients = this.findMissingIngredients(recipe)
+    console.log("missing ings", missingIngredients);
+    if(missingIngredients.length) {
+      return missingIngredients;
+    } else {
+      this.removeCookedIngredients(recipe)
+      // console.log('recipe after removing ings', recipe.ingredients)
+      // console.log('pantry after removing ings', this.pantry)
+    }
+  }
+}
 
 module.exports = Pantry;

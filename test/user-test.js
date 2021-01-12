@@ -4,7 +4,7 @@ import User from '../src/user';
 import Recipe from '../src/recipe'
 import {users} from './test-data';
 import {recipeData} from './test-data';
-import {ingredients} from './test-data';
+import {ingredientsData} from './test-data';
 
 
 describe('User', () => {
@@ -15,7 +15,7 @@ describe('User', () => {
   beforeEach(() => {
     userInfo = users[0];
     user = new User(userInfo);
-    recipes = recipeData.map(recipe => new Recipe(recipe, ingredients));
+    recipes = recipeData.map(recipe => new Recipe(recipe, ingredientsData));
   });
 
   it('should be a function', () => {
