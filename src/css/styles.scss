@@ -52,3 +52,104 @@ h4 {
   padding: 1px 4px 1px 4px;
   @include setDimensions(auto, max-content);
 }
+
+@media screen and (max-width: 800px) {
+  body {
+    background-color: $steel-blue;
+    display: grid;
+    font-family: $primary-font;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "header header"
+      "image image"
+      "aside aside"
+      "main main";
+    @include setDimensions(100vh, auto)
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: auto;
+  }
+
+  aside {
+    background-color: white;
+    grid-area: aside;
+    @include displayFlex(row, center, nowrap);
+    text-align: center;
+  }
+  
+  .wrap {
+    background-color: white;
+    @include setDimensions(auto, auto);
+    @include displayFlex(column, center, nowrap);
+    padding: 10px;
+    position: relative;
+  }
+
+  .drop-menu {
+    align-items: center;
+    background-color: #DAE4EE;
+    display: none;
+    @include setDimensions(600px, 250px);
+    margin-left: 60%;
+    margin-top: 110px;
+    overflow: scroll;
+    padding: 12px;
+    position: absolute;
+    text-align: center;
+    z-index: 3;
+  }
+
+  .filter-dropbtn {
+    background-color: $eucalyptus-green;
+    display: inline;
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    font-family: $primary-font;
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 5px 10px 5px 10px;
+  }
+
+  @media screen and (max-width: 600px) {
+    body {
+      background-color: $steel-blue;
+      display: grid;
+      font-family: $primary-font;
+      grid-template-columns: 1fr 5fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "header header"
+        "image image"
+        "aside aside"
+        "main main";
+      @include setDimensions(100vh, auto)
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: auto;
+    }
+
+    header {
+      @include displayFlex(row, center, wrap);
+      grid-area: header;
+      padding: 0% 0%;
+      @include setDimensions(auto, 100%);
+    }
+
+    .drop-menu {
+      align-items: center;
+      background-color: #DAE4EE;
+      display: none;
+      @include setDimensions(600px, 250px);
+      margin-left: 15%;
+      margin-top: 210px;
+      overflow: scroll;
+      padding: 12px;
+      position: absolute;
+      text-align: center;
+      z-index: 3;
+    }
+  }
+}

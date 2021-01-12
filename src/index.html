@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/scss" href="../styles.scss">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,600,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Sulphur+Point:400,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="../images/apple-logo.png" />
   </head>
   <body>
@@ -32,10 +33,13 @@
     </div>
     <aside>
       <div class="wrap">
-        <h2>Recipe Type</h2>
-        <ul class="tag-list">
-        </ul>
-        <button class="filter-btn">Filter Recipes</button>
+        <button class="filter-dropbtn">Show/Hide Tags</button>
+        <div class="dropdown">
+          <h2>Recipe Type</h2>
+          <ul class="tag-list"></ul>
+          </ul>
+          <button class="filter-btn">Filter Recipes</button>
+        </div>
       </div>
     </aside>
     <main>

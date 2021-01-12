@@ -24,10 +24,12 @@ const searchForm = document.querySelector("#search");
 const searchInput = document.querySelector("#search-input");
 const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
+const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 
 let pantryInfo = [];
 let viewFavorites = false;
 let menuOpen = false;
+let viewTags = false;
 let user;
 let recipes;
 let ingredients;
@@ -43,6 +45,7 @@ savedRecipesBtn.addEventListener("click", showSavedRecipes);
 searchBtn.addEventListener("click", pressEnterSearch);
 showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
+tagFilterDropdown.addEventListener("click", toggleFilter)
 
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
@@ -103,6 +106,11 @@ function checkIfSaved(recipe) {
 function toggleMenu() {
   menuOpen = !menuOpen;
   domUpdates.toggleMenuVis(menuOpen);
+}
+
+function toggleFilter() {
+  viewTags = !viewTags;
+  domUpdates.toggleFilterVis(viewTags);
 }
 
 function showSavedRecipes() {
