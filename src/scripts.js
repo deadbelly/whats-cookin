@@ -30,7 +30,6 @@ const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 const cookRecipeButton = document.querySelector(".cook-recipe-button");
 const recipeOkayButton = document.querySelector(".recipe-okay-button");
 
-let pantryInfo = [];
 let viewFavorites = false;
 let menuOpen = false;
 let viewTags = false;
@@ -43,11 +42,11 @@ let activeSearch;
 window.addEventListener("load", loadAllData);
 allRecipesBtn.addEventListener("click", showAllRecipes);
 filterBtn.addEventListener("click", reloadRecipes);
-main.addEventListener("click", addToMyRecipes);
+main.addEventListener("click", runCardButtons);
 pantryBtn.addEventListener("click", toggleMenu);
 savedRecipesBtn.addEventListener("click", showSavedRecipes);
 searchBtn.addEventListener("click", pressEnterSearch);
-showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
+showPantryRecipes.addEventListener("click", reloadRecipes);
 searchForm.addEventListener("submit", pressEnterSearch);
 tagFilterDropdown.addEventListener("click", toggleFilter);
 cookRecipeButton.addEventListener("click", cookRecipe);
@@ -61,8 +60,7 @@ function loadAllData() {
     domUpdates.loadUserDom(user);
     ingredients = generateIngredients(values[2]);
     recipes = generateRecipes(values[1]);
-    findPantryInfo();
-    domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
+    domUpdates.displayPantryInfo(generatePantryInfo());
     createCards();
     findTags();
   });
@@ -77,6 +75,15 @@ function generateRecipes(recipes) {
   return recipes.map(recipe => new Recipe(recipe, ingredients));
 }
 
+function generatePantryInfo() {
+  let ingredientsInPantry = [];
+  user.pantry.pantry.forEach((pantryIng, i) => {
+    ingredientsInPantry.push(ingredients.find(ing => ing.id === pantryIng.ingredient));
+    ingredientsInPantry[i].amount = pantryIng.amount;
+  })
+  return ingredientsInPantry.sort((a, b) => a.name.localeCompare(b.name));
+}
+
 function generateUserPantry(user) {
   return new Pantry(user);
 }
@@ -84,6 +91,7 @@ function generateUserPantry(user) {
 function generateIngredients(ingredients) {
   return ingredients.map(ingredient => new Ingredient(ingredient))
 }
+
 
 //CALL domUpdates
 function createCards() {
@@ -166,20 +174,24 @@ function returnToRecipeView() {
   document.getElementById("overlay").remove();
 }
 
-function addToMyRecipes() {
+function runCardButtons(event) {
   if (event.target.className === "card-apple-icon") {
-    let cardId = parseInt(event.target.closest(".recipe-card").id);
-    if (!user.favoriteRecipes.includes(cardId)) {
-      event.target.src = "../images/apple-logo.png";
-      user.addRecipe('favoriteRecipes', cardId);
-    } else {
-      event.target.src = "../images/apple-logo-outline.png";
-      user.removeRecipe('favoriteRecipes', cardId);
-    }
+    addToMyRecipes(event)
   } else if (event.target.id === "exit-recipe-btn") {
     domUpdates.exitRecipe(fullRecipeInfo, recipeOkayButton);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
     domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
+  }
+}
+
+function addToMyRecipes(event) {
+  let cardId = parseInt(event.target.closest(".recipe-card").id);
+  if (!user.favoriteRecipes.includes(cardId)) {
+    event.target.src = "../images/apple-logo.png";
+    user.addRecipe('favoriteRecipes', cardId);
+  } else {
+    event.target.src = "../images/apple-logo-outline.png";
+    user.removeRecipe('favoriteRecipes', cardId);
   }
 }
 
@@ -208,17 +220,24 @@ function filterRecipesByFavorites(recipeArray) {
   return recipeArray;
 }
 
-function findSelectedTags() {
-  let tagCheckboxes = document.querySelectorAll(".checked-tag");
-  let checkboxInfo = Array.from(tagCheckboxes);
+function findSelected(checkboxClass) {
+  let checkboxes = document.querySelectorAll(checkboxClass);
+  let checkboxInfo = Array.from(checkboxes);
   return checkboxInfo.filter(box => {
     return box.checked;
   })
 }
 
-function filterRecipesByTag(recipeArray, selectedTags) {
-  selectedTags.forEach(tag => {
+function filterRecipesByTag(recipeArray, selected) {
+  selected.forEach(tag => {
     recipeArray = recipeArray.filter(recipe => recipe.tags.includes(tag.id));
+  })
+  return recipeArray;
+}
+
+function filterRecipesByPantry(recipeArray, selected) {
+  selected.forEach(ing => {
+    recipeArray = recipeArray.filter(recipe => recipe.listIngredientNames().includes(ing.id));
   })
   return recipeArray;
 }
@@ -234,59 +253,14 @@ function filterRecipes(recipeArray) {
   if (activeSearch) {
     recipeArray = filterRecipesBySearch(recipeArray, activeSearch);
   }
-  if(findSelectedTags()) {
-    recipeArray = filterRecipesByTag(recipeArray, findSelectedTags());
+  if(findSelected('.checked-tags')) {
+    recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tags'));
+  }
+  if(findSelected('.pantry-checkbox')) {
+    recipeArray = filterRecipesByPantry(recipeArray, findSelected('.pantry-checkbox'))
   }
   if (viewFavorites) {
     recipeArray = filterRecipesByFavorites(recipeArray);
   }
   return recipeArray
-}
-
-// CREATE AND USE PANTRY
-function findPantryInfo() {
-  user.pantry.pantry.forEach(item => {
-    let itemInfo = ingredients.find(ingredient => {
-      return ingredient.id === item.ingredient;
-    });
-    let originalIngredient = pantryInfo.find(ingredient => {
-      if (itemInfo) {
-        return ingredient.name === itemInfo.name;
-      }
-    });
-    if (itemInfo && originalIngredient) {
-      originalIngredient.count += item.amount;
-    } else if (itemInfo) {
-      pantryInfo.push({name: itemInfo.name, count: item.amount});
-    }
-  });
-}
-
-function findCheckedPantryBoxes() {
-  let pantryCheckboxes = document.querySelectorAll(".pantry-checkbox");
-  let pantryCheckboxInfo = Array.from(pantryCheckboxes);
-  let selectedIngredients = pantryCheckboxInfo.filter(box => {
-    return box.checked;
-  })
-  showAllRecipes();
-  if (selectedIngredients.length > 0) {
-    findRecipesWithCheckedIngredients(selectedIngredients);
-  }
-}
-
-function findRecipesWithCheckedIngredients(selected) {
-  let recipeChecker = (arr, target) => target.every(v => arr.includes(v));
-  let ingredientNames = selected.map(item => {
-    return item.id;
-  })
-  recipes.forEach(recipe => {
-    let allRecipeIngredients = [];
-    recipe.ingredients.forEach(ingredient => {
-      allRecipeIngredients.push(ingredient.name);
-    });
-    if (!recipeChecker(allRecipeIngredients, ingredientNames)) {
-      let domRecipe = document.getElementById(`${recipe.id}`);
-      domRecipe.style.display = "none";
-    }
-  })
 }
