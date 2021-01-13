@@ -27,6 +27,7 @@ const searchInput = document.querySelector("#search-input");
 const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
 const tagFilterDropdown = document.querySelector(".filter-dropbtn");
+const cookRecipeButton = document.querySelector(".cook-recipe-button");
 
 let pantryInfo = [];
 let viewFavorites = false;
@@ -47,7 +48,8 @@ savedRecipesBtn.addEventListener("click", showSavedRecipes);
 searchBtn.addEventListener("click", pressEnterSearch);
 showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
-tagFilterDropdown.addEventListener("click", toggleFilter)
+tagFilterDropdown.addEventListener("click", toggleFilter);
+cookRecipeButton.addEventListener("click", cookRecipe);
 
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
@@ -138,6 +140,13 @@ function showAllRecipes() {
 
 
 // FAVORITE RECIPE FUNCTIONALITY
+function cookRecipe() {
+  // invoke user.pantry.canCook function
+  //
+}
+
+
+
 function addToMyRecipes() {
   if (event.target.className === "card-apple-icon") {
     let cardId = parseInt(event.target.closest(".recipe-card").id);
@@ -151,7 +160,7 @@ function addToMyRecipes() {
   } else if (event.target.id === "exit-recipe-btn") {
     domUpdates.exitRecipe(fullRecipeInfo);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
-    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes);
+    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton);
   }
 }
 

@@ -59,13 +59,14 @@ const domUpdates = {
       },
 
     //RECIPE INSTRUCTIONS
-      openRecipeInfo(event, fullRecipeInfo, recipes) {
+      openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton) {
         fullRecipeInfo.style.display = "inline";
         let recipeId = event.path.find(e => e.id).id;
         let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
+        cookRecipeButton.setAttribute("id", recipeId);
+        this.generateInstructions(recipe, fullRecipeInfo);
         this.generateRecipeTitle(recipe, this.generateIngredients(recipe), fullRecipeInfo);
         this.addRecipeImage(recipe);
-        this.generateInstructions(recipe, fullRecipeInfo);
         fullRecipeInfo.insertAdjacentHTML("beforebegin", "<section id='overlay'></div>");
       },
 
@@ -81,7 +82,7 @@ const domUpdates = {
           <h3 id="recipe-title">${recipe.name}</h3>
           <h4>Ingredients</h4>
           <p>${ingredients}</p>`
-        fullRecipeInfo.insertAdjacentHTML("beforeend", recipeTitle);
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", recipeTitle);
       },
 
       addRecipeImage(recipe) {
@@ -96,13 +97,16 @@ const domUpdates = {
         instructions.forEach(i => {
           instructionsList += `<li>${i}</li>`
         });
-        fullRecipeInfo.insertAdjacentHTML("beforeend", "<h4>Instructions</h4>");
-        fullRecipeInfo.insertAdjacentHTML("beforeend", `<ol>${instructionsList}</ol>`);
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", `<ol>${instructionsList}</ol>`);
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", "<h4>Instructions</h4>");
       },
 
+
+
        exitRecipe(fullRecipeInfo) {
-        while (fullRecipeInfo.firstChild &&
-          fullRecipeInfo.removeChild(fullRecipeInfo.firstChild));
+        while (fullRecipeInfo.childNodes.length > 2) {
+          fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
+        };
         fullRecipeInfo.style.display = "none";
         document.getElementById("overlay").remove();
       },
