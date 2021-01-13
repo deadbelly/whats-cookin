@@ -59,29 +59,32 @@ const domUpdates = {
       },
 
     //RECIPE INSTRUCTIONS
-      openRecipeInfo(event, fullRecipeInfo, recipes) {
+      openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton) {
         fullRecipeInfo.style.display = "inline";
         let recipeId = event.path.find(e => e.id).id;
         let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-        this.generateRecipeTitle(recipe, this.generateIngredients(recipe), fullRecipeInfo);
-        this.addRecipeImage(recipe);
+        cookRecipeButton.setAttribute("id", recipeId);
+        recipeOkayButton.setAttribute("id", recipeId);
         this.generateInstructions(recipe, fullRecipeInfo);
+        this.generateIngredients(recipe, fullRecipeInfo);
+        this.generateRecipeTitle(recipe, fullRecipeInfo);
+        this.addRecipeImage(recipe);
         fullRecipeInfo.insertAdjacentHTML("beforebegin", "<section id='overlay'></div>");
+        cookRecipeButton.style.display = "block";
       },
 
-      generateIngredients(recipe) {
-        return recipe && recipe.ingredients.map(i => {
+      generateIngredients(recipe, fullRecipeInfo) {
+        let ingredients = recipe.ingredients.map(i => {
           return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
         }).join(", ");
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h4>Ingredients</h4> <p>${ingredients}</p>`)
       },
 
-      generateRecipeTitle(recipe, ingredients, fullRecipeInfo) {
+      generateRecipeTitle(recipe, fullRecipeInfo) {
         let recipeTitle = `
           <button id="exit-recipe-btn">X</button>
-          <h3 id="recipe-title">${recipe.name}</h3>
-          <h4>Ingredients</h4>
-          <p>${ingredients}</p>`
-        fullRecipeInfo.insertAdjacentHTML("beforeend", recipeTitle);
+          <h3 id="recipe-title">${recipe.name}</h3>`
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", recipeTitle);
       },
 
       addRecipeImage(recipe) {
@@ -96,14 +99,38 @@ const domUpdates = {
         instructions.forEach(i => {
           instructionsList += `<li>${i}</li>`
         });
-        fullRecipeInfo.insertAdjacentHTML("beforeend", "<h4>Instructions</h4>");
-        fullRecipeInfo.insertAdjacentHTML("beforeend", `<ol>${instructionsList}</ol>`);
-      },
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", `<ol>${instructionsList}</ol>`);
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", "<h4>Instructions</h4>");
+       },
 
-       exitRecipe(fullRecipeInfo) {
-        while (fullRecipeInfo.firstChild &&
-          fullRecipeInfo.removeChild(fullRecipeInfo.firstChild));
+       displayMissingIngredients(missingIngredients, recipeCookButton, fullRecipeInfo, recipeOkayButton) {
+         recipeCookButton.style.display = "none";
+         missingIngredients.forEach(ingredient => {
+           fullRecipeInfo.insertAdjacentHTML("afterbegin", `<li>${this.capitalize(ingredient.name)}, ${ingredient.quantity.amount} ${ingredient.quantity.unit}</li>`)
+         });
+         fullRecipeInfo.insertAdjacentHTML("afterbegin", "<h2>You need the following ingredients to cook this meal:</h2>");
+         recipeOkayButton.style.display = "block";
+       },
+
+       displayTotalCostToCook(missingIngredients, fullRecipeInfo) {
+         let recipeCost = missingIngredients.reduce((acc, ing) => {
+           return acc + ing.cost;
+         }, 0);
+         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h2>Cost $${(recipeCost * .001).toFixed(2)}.</h2>`);
+       },
+
+       clearModalView(fullRecipeInfo) {
+         while (fullRecipeInfo.childNodes.length > 4) {
+           fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
+         };
+       },
+
+       exitRecipe(fullRecipeInfo, recipeOkayButton) {
+        while (fullRecipeInfo.childNodes.length > 4) {
+          fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
+        };
         fullRecipeInfo.style.display = "none";
+        recipeOkayButton.style.display = "none";
         document.getElementById("overlay").remove();
       },
 
@@ -130,6 +157,7 @@ const domUpdates = {
 
       //PANTRY
        displayPantryInfo(pantry) {
+        document.querySelector(".pantry-list").innerHTML = ''
         pantry.forEach(ingredient => {
           let ingredientHtml = `<li><input type="checkbox" class="pantry-checkbox" id="${ingredient.name}">
             <label for="${ingredient.name}">${ingredient.name}, ${ingredient.amount}</label></li>`;

@@ -4,6 +4,8 @@ import domUpdates from './domUpdates';
 
 import User from './user';
 import Recipe from './recipe';
+import Pantry from './pantry';
+import Ingredient from './ingredient';
 import './images/apple-logo-outline.png';
 import './images/apple-logo.png';
 import './images/search.png';
@@ -25,6 +27,8 @@ const searchInput = document.querySelector("#search-input");
 const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
 const tagFilterDropdown = document.querySelector(".filter-dropbtn");
+const cookRecipeButton = document.querySelector(".cook-recipe-button");
+const recipeOkayButton = document.querySelector(".recipe-okay-button");
 
 let viewFavorites = false;
 let menuOpen = false;
@@ -44,15 +48,18 @@ savedRecipesBtn.addEventListener("click", showSavedRecipes);
 searchBtn.addEventListener("click", pressEnterSearch);
 showPantryRecipes.addEventListener("click", reloadRecipes);
 searchForm.addEventListener("submit", pressEnterSearch);
-tagFilterDropdown.addEventListener("click", toggleFilter)
+tagFilterDropdown.addEventListener("click", toggleFilter);
+cookRecipeButton.addEventListener("click", cookRecipe);
+recipeOkayButton.addEventListener("click", returnToRecipeView);
 
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
   .then(values => {
     user = generateUser(values[0]);
+    user.pantry = generateUserPantry(user);
     domUpdates.loadUserDom(user);
-    ingredients = values[2];
-    recipes = instantiateRecipes(values[1]);
+    ingredients = generateIngredients(values[2]);
+    recipes = generateRecipes(values[1]);
     domUpdates.displayPantryInfo(generatePantryInfo());
     createCards();
     findTags();
@@ -64,7 +71,7 @@ function generateUser(users) {
   return new User(users[Math.floor(Math.random() * users.length)]);
 }
 
-function instantiateRecipes(recipes) {
+function generateRecipes(recipes) {
   return recipes.map(recipe => new Recipe(recipe, ingredients));
 }
 
@@ -76,6 +83,15 @@ function generatePantryInfo() {
   })
   return ingredientsInPantry.sort((a, b) => a.name.localeCompare(b.name));
 }
+
+function generateUserPantry(user) {
+  return new Pantry(user);
+}
+
+function generateIngredients(ingredients) {
+  return ingredients.map(ingredient => new Ingredient(ingredient))
+}
+
 
 //CALL domUpdates
 function createCards() {
@@ -134,13 +150,37 @@ function showAllRecipes() {
 
 
 // FAVORITE RECIPE FUNCTIONALITY
+function cookRecipe() {
+  let recipeId = event.target.id;
+  let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
+  let missingIngredients = user.pantry.canCook(recipe)
+  if (missingIngredients.length) {
+    domUpdates.clearModalView(fullRecipeInfo);
+    domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
+    domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
+    domUpdates.generateRecipeTitle(recipe, fullRecipeInfo);
+    domUpdates.addRecipeImage(recipe);
+  } else {
+    findPantryInfo();
+    domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
+    user.addRecipe("recipesToCook", recipeId);
+  }
+}
+
+function returnToRecipeView() {
+  domUpdates.clearModalView(fullRecipeInfo);
+  domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
+  recipeOkayButton.style.display = "none";
+  document.getElementById("overlay").remove();
+}
+
 function runCardButtons(event) {
   if (event.target.className === "card-apple-icon") {
     addToMyRecipes(event)
   } else if (event.target.id === "exit-recipe-btn") {
-    domUpdates.exitRecipe(fullRecipeInfo);
+    domUpdates.exitRecipe(fullRecipeInfo, recipeOkayButton);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
-    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes);
+    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
   }
 }
 
