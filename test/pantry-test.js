@@ -40,7 +40,7 @@ describe('Pantry', () => {
       { ingredient: 3, amount: 2 }]);
   })
 
-  it(`should return array of ingredients needed to cook a meal`, () => {
+  it(`should return array of missing ingredients needed to cook a meal`, () => {
     expect(pantry.cook(recipes[0])).to.eql([{
     id: 5,
     name: 'parmesan',
@@ -48,7 +48,7 @@ describe('Pantry', () => {
     cost: 12}]);
   });
 
-  it(`should return array of ingredients needed to cook a different meal`, () => {
+  it(`should return array of missing ingredients needed to cook a different meal`, () => {
     expect(pantry.cook(recipes[2])).to.eql([{
     id: 4,
     name: 'oil',
