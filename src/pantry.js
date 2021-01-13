@@ -27,7 +27,7 @@ class Pantry {
   removePantryIngredients(missingIngredients) {
     missingIngredients.forEach(ingredient => {
       if (this.findIngredient(ingredient.id)) {
-        ingredient.quantity.amount -= this.findIngredient(ingredient.id).amount
+        ingredient.quantity.amount -= this.findIngredient(ingredient.id).amount;
       }
     });
     missingIngredients = missingIngredients.filter(ingredient => ingredient.amount > 0)
@@ -35,7 +35,7 @@ class Pantry {
 
   removeCookedIngredients(recipe) {
     recipe.ingredients.forEach(ingredient => {
-      this.findIngredient(ingredient.id).amount -= ingredient.quantity.amount
+      this.findIngredient(ingredient.id).amount -= ingredient.quantity.amount;
     })
   }
 
