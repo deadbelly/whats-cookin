@@ -1,7 +1,8 @@
 .show-pantry-recipes-btn,
 .show-all-btn,
 .filter-btn,
-.cook-recipe-button {
+.cook-recipe-button,
+.recipes-to-cook-btn {
   background-color: $eucalyptus-green;
   border: 0;
   border-radius: 3px;
@@ -23,6 +24,10 @@
 
 .cook-recipe-button {
   margin-left: 40%;
+}
+
+.recipes-to-cook-btn {
+  margin-top: 5%;
 }
 
 .show-all-btn {
