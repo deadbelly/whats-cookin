@@ -31,7 +31,9 @@ class Pantry {
     if(missingIngredients.length) {
       return missingIngredients;
     } else {
-      this.removeCookedIngredients(recipe)
+      console.log(this.pantry);
+      this.removeCookedIngredients(recipe);
+      console.log(this.pantry);
     }
   }
 }
