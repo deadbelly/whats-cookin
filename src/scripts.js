@@ -175,7 +175,7 @@ function cookRecipe() {
     domUpdates.generateRecipeTitle(recipe, fullRecipeInfo);
     domUpdates.addRecipeImage(recipe);
   } else {
-    domUpdates.displayPantryInfo((findPantryInfo());
+    domUpdates.displayPantryInfo(generatePantryInfo());
     user.addRecipe("recipesToCook", recipeId);
   }
 }
