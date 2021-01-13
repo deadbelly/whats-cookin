@@ -71,7 +71,7 @@ function instantiateRecipes(recipes) {
 
 function generatePantryInfo() {
   let ingredientsInPantry = [];
-  user.pantry.forEach((pantryIng, i) => {
+  user.pantry.pantry.forEach((pantryIng, i) => {
     ingredientsInPantry.push(ingredients.find(ing => ing.id === pantryIng.ingredient));
     ingredientsInPantry[i].amount = pantryIng.amount;
   })
