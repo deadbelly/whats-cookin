@@ -101,24 +101,23 @@ const domUpdates = {
         fullRecipeInfo.insertAdjacentHTML("afterbegin", "<h4>Instructions</h4>");
        },
 
-       displayMissingIngredients(missingIngredients, recipeButton, fullRecipeInfo) {
+       displayMissingIngredients(missingIngredients, recipeCookButton, fullRecipeInfo, recipeOkayButton) {
          while (fullRecipeInfo.childNodes.length > 2) {
            fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
          };
-         recipeButton.style.display = "none";
+         recipeCookButton.style.display = "none";
          missingIngredients.forEach(ingredient => {
            fullRecipeInfo.insertAdjacentHTML("afterbegin", `<li>${this.capitalize(ingredient.name)}, ${ingredient.quantity.amount} ${ingredient.quantity.unit}</li>`)
          });
          fullRecipeInfo.insertAdjacentHTML("afterbegin", "<h2>You need the following ingredients to cook this meal:</h2>");
+         recipeOkayButton.style.display = "block";
        },
 
        displayTotalCostToCook(missingIngredients, fullRecipeInfo) {
-         console.log(missingIngredients)
          let recipeCost = missingIngredients.reduce((acc, ing) => {
            return acc + ing.cost;
          }, 0);
-         console.log(recipeCost);
-         fullRecipeInfo.insertAdjacentHTML("beforeend", `<h2>Cost $${(recipeCost * .01).toFixed(2)}</h2>`);
+         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h2>Cost $${(recipeCost * .01).toFixed(2)}</h2>.`);
        },
 
        exitRecipe(fullRecipeInfo) {

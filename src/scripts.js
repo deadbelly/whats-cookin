@@ -28,6 +28,7 @@ const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
 const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 const cookRecipeButton = document.querySelector(".cook-recipe-button");
+const recipeOkayButton = document.querySelector(".recipe-okay-button");
 
 let pantryInfo = [];
 let viewFavorites = false;
@@ -146,8 +147,9 @@ function cookRecipe() {
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
   let missingIngredients = user.pantry.canCook(recipe)
   if (missingIngredients.length) {
-    domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo);
-    domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo)
+    domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
+    domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
+    // recipeOkayButton.style.visibilty("visible");
     // hide cook meal button, replace it with okay button
     // okay button should have attribute of id set to recipe id
     // replace HTML in modal view with list of ingredients needed and total cost for those ingredients
