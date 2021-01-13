@@ -142,7 +142,6 @@ function showAllRecipes() {
 
 // FAVORITE RECIPE FUNCTIONALITY
 function cookRecipe() {
-  // let recipeId = event.path.find(e => e.id).id;
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
   let missingIngredients = user.pantry.canCook(recipe)
@@ -150,24 +149,13 @@ function cookRecipe() {
     domUpdates.clearModalView(fullRecipeInfo);
     domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
     domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
-
-    // recipeOkayButton.style.visibilty("visible");
-    // hide cook meal button, replace it with okay button
-    // okay button should have attribute of id set to recipe id
-    // replace HTML in modal view with list of ingredients needed and total cost for those ingredients
-    // ok button should revert back to modal view of recipe instructions etc.
+    domUpdates.generateRecipeTitle(recipe, fullRecipeInfo);
+    domUpdates.addRecipeImage(recipe);
   } else {
     findPantryInfo();
     domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
     user.addRecipe("recipesToCook", recipeId);
-    // update user pantry in api with a fetch post network fetchRequests
-    //
   }
-
-  // if yes run scripts to display ingredients needed, cost, etc.
-  // else update
-  //
-  //
 }
 
 
@@ -183,7 +171,7 @@ function addToMyRecipes() {
       user.removeRecipe('favoriteRecipes', cardId);
     }
   } else if (event.target.id === "exit-recipe-btn") {
-    domUpdates.exitRecipe(fullRecipeInfo);
+    domUpdates.exitRecipe(fullRecipeInfo, recipeOkayButton);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
     domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton);
   }

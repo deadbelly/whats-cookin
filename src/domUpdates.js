@@ -65,23 +65,24 @@ const domUpdates = {
         let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
         cookRecipeButton.setAttribute("id", recipeId);
         this.generateInstructions(recipe, fullRecipeInfo);
-        this.generateRecipeTitle(recipe, this.generateIngredients(recipe), fullRecipeInfo);
+        this.generateIngredients(recipe, fullRecipeInfo);
+        this.generateRecipeTitle(recipe, fullRecipeInfo);
         this.addRecipeImage(recipe);
         fullRecipeInfo.insertAdjacentHTML("beforebegin", "<section id='overlay'></div>");
+        cookRecipeButton.style.display = "block";
       },
 
-      generateIngredients(recipe) {
-        return recipe && recipe.ingredients.map(i => {
+      generateIngredients(recipe, fullRecipeInfo) {
+        let ingredients = recipe.ingredients.map(i => {
           return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
         }).join(", ");
+        fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h4>Ingredients</h4> <p>${ingredients}</p>`)
       },
 
-      generateRecipeTitle(recipe, ingredients, fullRecipeInfo) {
+      generateRecipeTitle(recipe, fullRecipeInfo) {
         let recipeTitle = `
           <button id="exit-recipe-btn">X</button>
-          <h3 id="recipe-title">${recipe.name}</h3>
-          <h4>Ingredients</h4>
-          <p>${ingredients}</p>`
+          <h3 id="recipe-title">${recipe.name}</h3>`
         fullRecipeInfo.insertAdjacentHTML("afterbegin", recipeTitle);
       },
 
@@ -118,16 +119,17 @@ const domUpdates = {
        },
 
        clearModalView(fullRecipeInfo) {
-         while (fullRecipeInfo.childNodes.length > 3) {
+         while (fullRecipeInfo.childNodes.length > 4) {
            fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
          };
        },
 
-       exitRecipe(fullRecipeInfo) {
-        while (fullRecipeInfo.childNodes.length > 2) {
+       exitRecipe(fullRecipeInfo, recipeOkayButton) {
+        while (fullRecipeInfo.childNodes.length > 4) {
           fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
         };
         fullRecipeInfo.style.display = "none";
+        recipeOkayButton.style.display = "none";
         document.getElementById("overlay").remove();
       },
 
