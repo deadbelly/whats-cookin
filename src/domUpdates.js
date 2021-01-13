@@ -72,7 +72,7 @@ const domUpdates = {
 
       generateIngredients(recipe) {
         return recipe && recipe.ingredients.map(i => {
-          return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
+          return `${(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
         }).join(", ");
       },
 
@@ -99,9 +99,21 @@ const domUpdates = {
         });
         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<ol>${instructionsList}</ol>`);
         fullRecipeInfo.insertAdjacentHTML("afterbegin", "<h4>Instructions</h4>");
-      },
+       },
 
-
+       displayMissingIngredients(missingIngredients, recipeButton, fullRecipeInfo) {
+         while (fullRecipeInfo.childNodes.length > 2) {
+           fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
+         };
+         recipeButton.style.display = "none";
+         // let completeIngredientsList = missingIngredients.map(i => {
+         //   return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
+         // }).join(", ");
+         // console.log(completeIngredientsList);
+         return missingIngredients.forEach(ingredient => {
+           return fullRecipeInfo.insertAdjacentHTML("afterbegin", `<li>${ingredient.name}, ${ingredient.quantity.amount}, ${ingredient.quantity.unit}</li>`)
+         });
+       },
 
        exitRecipe(fullRecipeInfo) {
         while (fullRecipeInfo.childNodes.length > 2) {

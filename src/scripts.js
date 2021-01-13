@@ -146,10 +146,15 @@ function cookRecipe() {
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
   let missingIngredients = user.pantry.canCook(recipe)
   if (missingIngredients.length) {
-
+    domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo);
+    // hide cook meal button, replace it with okay button
+    // okay button should have attribute of id set to recipe id
+    // replace HTML in modal view with list of ingredients needed and total cost for those ingredients
+    // ok button should revert back to modal view of recipe instructions etc.
   } else {
     findPantryInfo();
     domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
+    user.addRecipe("recipesToCook", recipeId);
     // update user pantry in api with a fetch post network fetchRequests
     //
   }
