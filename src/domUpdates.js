@@ -51,10 +51,13 @@ const domUpdates = {
 
       toggleFilterVis(viewTags) {
         var tagDropdown = document.querySelector(".tag-list");
+        var filterRecipes = document.querySelector(".filter-btn");
         if (viewTags) {
           tagDropdown.style.display = "block";
+          filterRecipes.style.display = "block";
         } else {
           tagDropdown.style.display = "none";
+          filterRecipes.style.display = "none";
         }
       },
 
