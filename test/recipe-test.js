@@ -9,10 +9,20 @@ import {recipeData} from './test-data';
 import {ingredientsData} from './test-data';
 
 describe('Recipe', () => {
+  let userInfo;
+  let user;
+  let pantry;
+  let recipes;
   let recipe;
+  let ingredients;
 
   beforeEach(() => {
-    recipe = new Recipe(recipeData[0], ingredientsData);
+    ingredients = ingredientsData.map(data => new Ingredient(data));
+    userInfo = users[0];
+    user = new User(userInfo);
+    pantry = new Pantry(user);
+    recipes = recipeData.map(recipe => new Recipe(recipe, ingredients));
+    recipe = recipes[0];
   });
 
   it('should be a function', () => {
