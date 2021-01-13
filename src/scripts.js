@@ -141,8 +141,10 @@ function showAllRecipes() {
 
 // FAVORITE RECIPE FUNCTIONALITY
 function cookRecipe() {
-  // invoke user.pantry.canCook function
-  //
+  // let recipeId = event.path.find(e => e.id).id;
+  let recipeId = event.target.id;
+  let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
+  user.pantry.canCook(recipe)
 }
 
 
