@@ -144,7 +144,20 @@ function cookRecipe() {
   // let recipeId = event.path.find(e => e.id).id;
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-  user.pantry.canCook(recipe)
+  let missingIngredients = user.pantry.canCook(recipe)
+  if (missingIngredients.length) {
+
+  } else {
+    findPantryInfo();
+    domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
+    // update user pantry in api with a fetch post network fetchRequests
+    //
+  }
+
+  // if yes run scripts to display ingredients needed, cost, etc.
+  // else update
+  //
+  //
 }
 
 

@@ -42,11 +42,10 @@ class Pantry {
   canCook(recipe) {
     let missingIngredients = this.findMissingIngredients(recipe)
     console.log("missing ings", missingIngredients);
-    if(missingIngredients.length) {
-      return missingIngredients;
-    } else {
+    if(!missingIngredients.length) {
       this.removeCookedIngredients(recipe);
     }
+    return missingIngredients;
   }
 }
 
