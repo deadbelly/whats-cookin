@@ -147,8 +147,10 @@ function cookRecipe() {
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
   let missingIngredients = user.pantry.canCook(recipe)
   if (missingIngredients.length) {
-    domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
+    domUpdates.clearModalView(fullRecipeInfo);
     domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
+    domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
+
     // recipeOkayButton.style.visibilty("visible");
     // hide cook meal button, replace it with okay button
     // okay button should have attribute of id set to recipe id

@@ -102,9 +102,6 @@ const domUpdates = {
        },
 
        displayMissingIngredients(missingIngredients, recipeCookButton, fullRecipeInfo, recipeOkayButton) {
-         while (fullRecipeInfo.childNodes.length > 2) {
-           fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
-         };
          recipeCookButton.style.display = "none";
          missingIngredients.forEach(ingredient => {
            fullRecipeInfo.insertAdjacentHTML("afterbegin", `<li>${this.capitalize(ingredient.name)}, ${ingredient.quantity.amount} ${ingredient.quantity.unit}</li>`)
@@ -117,7 +114,13 @@ const domUpdates = {
          let recipeCost = missingIngredients.reduce((acc, ing) => {
            return acc + ing.cost;
          }, 0);
-         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h2>Cost $${(recipeCost * .01).toFixed(2)}</h2>.`);
+         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h2>Cost $${(recipeCost * .01).toFixed(2)}.</h2>`);
+       },
+
+       clearModalView(fullRecipeInfo) {
+         while (fullRecipeInfo.childNodes.length > 3) {
+           fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
+         };
        },
 
        exitRecipe(fullRecipeInfo) {
