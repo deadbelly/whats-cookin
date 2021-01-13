@@ -30,6 +30,7 @@ const tagList = document.querySelector(".tag-list");
 const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 const cookRecipeButton = document.querySelector(".cook-recipe-button");
 const recipeOkayButton = document.querySelector(".recipe-okay-button");
+const recipesToCookBtn = document.querySelector(".recipes-to-cook-btn");
 
 
 let pantryInfo = [];
