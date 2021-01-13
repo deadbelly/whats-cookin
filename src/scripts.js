@@ -51,6 +51,7 @@ showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
 tagFilterDropdown.addEventListener("click", toggleFilter);
 cookRecipeButton.addEventListener("click", cookRecipe);
+recipeOkayButton.addEventListener("click", returnToRecipeView);
 
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
@@ -158,7 +159,12 @@ function cookRecipe() {
   }
 }
 
-
+function returnToRecipeView() {
+  domUpdates.clearModalView(fullRecipeInfo);
+  domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
+  recipeOkayButton.style.display = "none";
+  document.getElementById("overlay").remove();
+}
 
 function addToMyRecipes() {
   if (event.target.className === "card-apple-icon") {
@@ -173,7 +179,7 @@ function addToMyRecipes() {
   } else if (event.target.id === "exit-recipe-btn") {
     domUpdates.exitRecipe(fullRecipeInfo, recipeOkayButton);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
-    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton);
+    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
   }
 }
 
