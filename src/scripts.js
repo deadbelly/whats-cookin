@@ -31,6 +31,7 @@ const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 const cookRecipeButton = document.querySelector(".cook-recipe-button");
 const recipeOkayButton = document.querySelector(".recipe-okay-button");
 
+
 let pantryInfo = [];
 let viewFavorites = false;
 let menuOpen = false;
