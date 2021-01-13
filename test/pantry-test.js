@@ -38,7 +38,7 @@ describe('Pantry', () => {
     amount: 4})
   });
 
-  it.only(`if there are not enough ingredients, pantry should return array of ingredients needed to cook a meal`, () => {
+  it(`if there are not enough ingredients, pantry should return array of ingredients needed to cook a meal`, () => {
     expect(pantry.canCook(recipes[0])).to.eql([
   {
     id: 5,

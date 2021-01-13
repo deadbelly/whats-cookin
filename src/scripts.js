@@ -165,7 +165,7 @@ function showAllRecipes() {
 function cookRecipe() {
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-  let missingIngredients = user.pantry.canCook(recipe)
+  let missingIngredients = user.pantry.cook(recipe);
   if (missingIngredients.length) {
     domUpdates.clearModalView(fullRecipeInfo);
     domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
@@ -261,8 +261,8 @@ function filterRecipes(recipeArray) {
   if (activeSearch) {
     recipeArray = filterRecipesBySearch(recipeArray, activeSearch);
   }
-  if(findSelected('.checked-tags')) {
-    recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tags'));
+  if(findSelected('.checked-tag')) {
+    recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tag'));
   }
   if(findSelected('.pantry-checkbox')) {
     recipeArray = filterRecipesByPantry(recipeArray, findSelected('.pantry-checkbox'))
