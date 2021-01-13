@@ -120,9 +120,15 @@ const domUpdates = {
         document.querySelector(".my-recipes-banner").style.display = "block";
       },
 
+      showRecipesToCookBanner() {
+        document.querySelector(".welcome-msg").style.display = "none";
+        document.querySelector(".recipes-to-cook-banner").style.display = "block";
+      },
+
        showWelcomeBanner() {
         document.querySelector(".welcome-msg").style.display = "flex";
         document.querySelector(".my-recipes-banner").style.display = "none";
+        document.querySelector(".recipes-to-cook-banner").style.display = "none";
       },
 
       //SEARCH RECIPES & INGREDIENTS

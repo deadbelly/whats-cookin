@@ -16,6 +16,7 @@ import './images/seasoning.png';
 
 
 const allRecipesBtn = document.querySelector(".show-all-btn");
+const allRecipesBtn2 = document.querySelector(".show-all-btn2");
 const filterBtn = document.querySelector(".filter-btn");
 const fullRecipeInfo = document.querySelector(".recipe-instructions");
 const main = document.querySelector("main");
@@ -28,11 +29,13 @@ const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
 const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 const cookRecipeButton = document.querySelector(".cook-recipe-button");
+const recipesToCookBtn = document.querySelector('.recipes-to-cook-btn');
 
 let pantryInfo = [];
 let viewFavorites = false;
 let menuOpen = false;
 let viewTags = false;
+let viewRecipesToCook = false;
 let user;
 let recipes;
 let ingredients;
@@ -41,6 +44,7 @@ let activeSearch;
 
 window.addEventListener("load", loadAllData);
 allRecipesBtn.addEventListener("click", showAllRecipes);
+allRecipesBtn2.addEventListener("click", showAllRecipes);
 filterBtn.addEventListener("click", reloadRecipes);
 main.addEventListener("click", addToMyRecipes);
 pantryBtn.addEventListener("click", toggleMenu);
@@ -50,6 +54,8 @@ showPantryRecipes.addEventListener("click", findCheckedPantryBoxes);
 searchForm.addEventListener("submit", pressEnterSearch);
 tagFilterDropdown.addEventListener("click", toggleFilter);
 cookRecipeButton.addEventListener("click", cookRecipe);
+recipesToCookBtn.addEventListener("click", showRecipesToCook);
+
 
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
@@ -132,8 +138,16 @@ function showSavedRecipes() {
   domUpdates.showMyRecipesBanner();
 }
 
+function showRecipesToCook() {
+  viewRecipesToCook = true;
+  // reloadRecipes();
+  domUpdates.clearCards();
+  domUpdates.showRecipesToCookBanner();
+}
+
 function showAllRecipes() {
   viewFavorites = false;
+  viewRecipesToCook = false;
   reloadRecipes();
   domUpdates.showWelcomeBanner();
 }
