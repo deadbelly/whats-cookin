@@ -3,38 +3,49 @@ class Pantry {
     this.pantry = user.pantry;
   }
 
-  findIngredientById(id) {
-    return this.pantry.find(ingredient => ingredient.id === id)
+  findIngredient(id) {
+    return this.pantry.find(ingredient => ingredient.ingredient === id)
   }
 
   findMissingIngredients(recipe) {
     let missingIngredients = recipe.ingredients.filter(ingredient => {
-      return (!this.findIngredientById(ingredient.id) ||
-      ingredient.quantity.amount > this.findIngredientById(ingredient.id).amount)
+      return (!this.findIngredient(ingredient.id) ||
+      ingredient.quantity.amount > this.findIngredient(ingredient.id).amount)
     })
+    this.removePantryIngredients(missingIngredients);
+    this.calculateRemainingCost(missingIngredients);
+    return missingIngredients;
+  }
+
+  calculateRemainingCost(missingIngredients) {
     missingIngredients.forEach(missingIng => {
       missingIng.cost = Math.floor(missingIng.estimatedCostInCents * missingIng.quantity.amount);
       delete missingIng.estimatedCostInCents;
     })
-    return missingIngredients;
+  }
+
+  removePantryIngredients(missingIngredients) {
+    missingIngredients.forEach(ingredient => {
+      if (this.findIngredient(ingredient.id)) {
+        ingredient.quantity.amount -= this.findIngredient(ingredient.id).amount
+      }
+    });
+    missingIngredients = missingIngredients.filter(ingredient => ingredient.amount > 0)
   }
 
   removeCookedIngredients(recipe) {
     recipe.ingredients.forEach(ingredient => {
-      this.findIngredientById(ingredient.id).amount -= ingredient.quantity.amount
+      this.findIngredient(ingredient.id).amount -= ingredient.quantity.amount
     })
   }
 
   canCook(recipe) {
     let missingIngredients = this.findMissingIngredients(recipe)
     console.log("missing ings", missingIngredients);
-    if(missingIngredients.length) {
-      return missingIngredients;
-    } else {
-      console.log(this.pantry);
+    if(!missingIngredients.length) {
       this.removeCookedIngredients(recipe);
-      console.log(this.pantry);
     }
+    return missingIngredients;
   }
 }
 

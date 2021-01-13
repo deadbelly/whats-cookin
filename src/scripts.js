@@ -29,7 +29,7 @@ const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
 const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 const cookRecipeButton = document.querySelector(".cook-recipe-button");
-const recipesToCookBtn = document.querySelector('.recipes-to-cook-btn');
+const recipeOkayButton = document.querySelector(".recipe-okay-button");
 
 let pantryInfo = [];
 let viewFavorites = false;
@@ -155,10 +155,20 @@ function showAllRecipes() {
 
 // FAVORITE RECIPE FUNCTIONALITY
 function cookRecipe() {
-  // let recipeId = event.path.find(e => e.id).id;
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-  user.pantry.canCook(recipe)
+  let missingIngredients = user.pantry.canCook(recipe)
+  if (missingIngredients.length) {
+    domUpdates.clearModalView(fullRecipeInfo);
+    domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
+    domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
+    domUpdates.generateRecipeTitle(recipe, fullRecipeInfo);
+    domUpdates.addRecipeImage(recipe);
+  } else {
+    findPantryInfo();
+    domUpdates.displayPantryInfo(pantryInfo.sort((a, b) => a.name.localeCompare(b.name)));
+    user.addRecipe("recipesToCook", recipeId);
+  }
 }
 
 
@@ -174,7 +184,7 @@ function addToMyRecipes() {
       user.removeRecipe('favoriteRecipes', cardId);
     }
   } else if (event.target.id === "exit-recipe-btn") {
-    domUpdates.exitRecipe(fullRecipeInfo);
+    domUpdates.exitRecipe(fullRecipeInfo, recipeOkayButton);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
     domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton);
   }

@@ -2,13 +2,13 @@ const users = [
   {id: 1,
   name: "Saige O'Kon",
   pantry: [
-  {id: 1,
+  {ingredient: 1,
   amount: 2},
 
-  {id: 2,
+  {ingredient: 2,
   amount: 5},
 
-  {id: 3,
+  {ingredient: 3,
   amount: 3}],
   favoriteRecipes: [],
   recipesToCook: []

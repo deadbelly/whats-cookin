@@ -1,8 +1,7 @@
 .show-pantry-recipes-btn,
 .show-all-btn,
 .filter-btn,
-.cook-recipe-button,
-.recipes-to-cook-btn {
+.recipe-okay-button {
   background-color: $eucalyptus-green;
   border: 0;
   border-radius: 3px;
@@ -33,4 +32,8 @@
 .show-all-btn {
   @include setDimensions(40px, 200px);
   margin-top: 20px;
+}
+
+.recipe-okay-button {
+  display: none;
 }
