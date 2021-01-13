@@ -51,10 +51,13 @@ const domUpdates = {
 
       toggleFilterVis(viewTags) {
         var tagDropdown = document.querySelector(".tag-list");
+        var filterRecipes = document.querySelector(".filter-btn");
         if (viewTags) {
           tagDropdown.style.display = "block";
+          filterRecipes.style.display = "block";
         } else {
           tagDropdown.style.display = "none";
+          filterRecipes.style.display = "none";
         }
       },
 
@@ -140,9 +143,15 @@ const domUpdates = {
         document.querySelector(".my-recipes-banner").style.display = "block";
       },
 
+      showRecipesToCookBanner() {
+        document.querySelector(".welcome-msg").style.display = "none";
+        document.querySelector(".recipes-to-cook-banner").style.display = "block";
+      },
+
        showWelcomeBanner() {
         document.querySelector(".welcome-msg").style.display = "flex";
         document.querySelector(".my-recipes-banner").style.display = "none";
+        document.querySelector(".recipes-to-cook-banner").style.display = "none";
       },
 
       //SEARCH RECIPES & INGREDIENTS

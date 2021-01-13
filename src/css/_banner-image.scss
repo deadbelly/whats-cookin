@@ -6,18 +6,21 @@
 }
 
 .my-recipes-banner,
-.welcome-msg {
+.welcome-msg,
+.recipes-to-cook-banner {
   text-align: center;
   @include setDimensions(auto, 95%)
 }
 
 .my-recipes-banner h1,
-.welcome-msg h1 {
+.welcome-msg h1,
+.recipes-to-cook-banner h1 {
   color: white;
   @include setDimensions(auto, 100%)
 }
 
-.my-recipes-banner {
+.my-recipes-banner,
+.recipes-to-cook-banner {
   display: none;
   margin-top: 25px;
 }
