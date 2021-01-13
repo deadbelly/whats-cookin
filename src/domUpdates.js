@@ -72,7 +72,7 @@ const domUpdates = {
 
       generateIngredients(recipe) {
         return recipe && recipe.ingredients.map(i => {
-          return `${(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
+          return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
         }).join(", ");
       },
 
@@ -106,14 +106,18 @@ const domUpdates = {
            fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
          };
          recipeButton.style.display = "none";
-         // let completeIngredientsList = missingIngredients.map(i => {
-         //   return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
-         // }).join(", ");
-         // console.log(completeIngredientsList);
          return missingIngredients.forEach(ingredient => {
-           return fullRecipeInfo.insertAdjacentHTML("afterbegin", `<li>${ingredient.name}, ${ingredient.quantity.amount}, ${ingredient.quantity.unit}</li>`)
+           return fullRecipeInfo.insertAdjacentHTML("afterbegin", `<li>${this.capitalize(ingredient.name)} ${ingredient.quantity.amount}, ${ingredient.quantity.unit}</li>`)
          });
        },
+
+       // displayTotalCostToCook(missingIngredients, fullRecipeInfo) {
+       //   let recipeCost = missingIngredients.reduce((acc, totalCost) => {
+       //     return acc + totalCost
+       //   }, 0);
+       //   console.log(recipeCost);
+       //   return fullRecipeInfo.insertAdjacentHTML("afterbegin", `<li>This will cost ${recipeCost} to acquire the ingredients needed to make this meal</li>`);
+       // }
 
        exitRecipe(fullRecipeInfo) {
         while (fullRecipeInfo.childNodes.length > 2) {

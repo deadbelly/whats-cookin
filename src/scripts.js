@@ -147,6 +147,7 @@ function cookRecipe() {
   let missingIngredients = user.pantry.canCook(recipe)
   if (missingIngredients.length) {
     domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo);
+    domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo)
     // hide cook meal button, replace it with okay button
     // okay button should have attribute of id set to recipe id
     // replace HTML in modal view with list of ingredients needed and total cost for those ingredients
