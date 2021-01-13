@@ -26,7 +26,6 @@ const showPantryRecipes = document.querySelector(".show-pantry-recipes-btn");
 const tagList = document.querySelector(".tag-list");
 const tagFilterDropdown = document.querySelector(".filter-dropbtn");
 
-let pantryInfo = [];
 let viewFavorites = false;
 let menuOpen = false;
 let viewTags = false;
