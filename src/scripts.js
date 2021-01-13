@@ -39,7 +39,7 @@ let activeSearch;
 window.addEventListener("load", loadAllData);
 allRecipesBtn.addEventListener("click", showAllRecipes);
 filterBtn.addEventListener("click", reloadRecipes);
-main.addEventListener("click", addToMyRecipes);
+main.addEventListener("click", runCardButtons);
 pantryBtn.addEventListener("click", toggleMenu);
 savedRecipesBtn.addEventListener("click", showSavedRecipes);
 searchBtn.addEventListener("click", pressEnterSearch);
@@ -135,20 +135,24 @@ function showAllRecipes() {
 
 
 // FAVORITE RECIPE FUNCTIONALITY
-function addToMyRecipes() {
+function runCardButtons(event) {
   if (event.target.className === "card-apple-icon") {
-    let cardId = parseInt(event.target.closest(".recipe-card").id);
-    if (!user.favoriteRecipes.includes(cardId)) {
-      event.target.src = "../images/apple-logo.png";
-      user.addRecipe('favoriteRecipes', cardId);
-    } else {
-      event.target.src = "../images/apple-logo-outline.png";
-      user.removeRecipe('favoriteRecipes', cardId);
-    }
+    addToMyRecipes(event)
   } else if (event.target.id === "exit-recipe-btn") {
     domUpdates.exitRecipe(fullRecipeInfo);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
     domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes);
+  }
+}
+
+function addToMyRecipes(event) {
+  let cardId = parseInt(event.target.closest(".recipe-card").id);
+  if (!user.favoriteRecipes.includes(cardId)) {
+    event.target.src = "../images/apple-logo.png";
+    user.addRecipe('favoriteRecipes', cardId);
+  } else {
+    event.target.src = "../images/apple-logo-outline.png";
+    user.removeRecipe('favoriteRecipes', cardId);
   }
 }
 
