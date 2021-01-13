@@ -62,11 +62,12 @@ const domUpdates = {
       },
 
     //RECIPE INSTRUCTIONS
-      openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton) {
+      openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton) {
         fullRecipeInfo.style.display = "inline";
         let recipeId = event.path.find(e => e.id).id;
         let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
         cookRecipeButton.setAttribute("id", recipeId);
+        recipeOkayButton.setAttribute("id", recipeId);
         this.generateInstructions(recipe, fullRecipeInfo);
         this.generateIngredients(recipe, fullRecipeInfo);
         this.generateRecipeTitle(recipe, fullRecipeInfo);
@@ -118,7 +119,7 @@ const domUpdates = {
          let recipeCost = missingIngredients.reduce((acc, ing) => {
            return acc + ing.cost;
          }, 0);
-         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h2>Cost $${(recipeCost * .01).toFixed(2)}.</h2>`);
+         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h2>Cost $${(recipeCost * .001).toFixed(2)}.</h2>`);
        },
 
        clearModalView(fullRecipeInfo) {
