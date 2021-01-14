@@ -56,14 +56,14 @@ searchForm.addEventListener("submit", pressEnterSearch);
 tagFilterDropdown.addEventListener("click", toggleFilter);
 cookRecipeButton.addEventListener("click", cookRecipe);
 recipesToCookBtn.addEventListener("click", showRecipesToCook);
-recipeOkayButton.addEventListener("click", returnToRecipeView);
+recipeOkayButton.addEventListener("click", returnToRecipeInfo);
 
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
   .then(values => {
     user = generateUser(values[0]);
     user.pantry = generateUserPantry(user);
-    domUpdates.loadUserDom(user);
+    domUpdates.displayWelcomeMessage(user);
     ingredients = generateIngredients(values[2]);
     recipes = generateRecipes(values[1]);
     domUpdates.displayPantryInfo(generatePantryInfo());
@@ -108,8 +108,16 @@ function createCards() {
     if (recipe.name.length > 40) {
       shortRecipeName = recipe.name.substring(0, 40) + "...";
     }
-    domUpdates.addToDom(index, main, recipe, shortRecipeName, iconStatus);
+    domUpdates.addCard(main, recipe, shortRecipeName, iconStatus);
   });
+}
+
+function checkIfSaved(recipe) {
+  if (user.favoriteRecipes.includes(recipe.id)) {
+    return domUpdates.returnSavedImg();
+  } else {
+    return domUpdates.returnNormalImg();
+  }
 }
 
 function reloadRecipes() {
@@ -124,14 +132,6 @@ function findTags() {
   domUpdates.listTags(tags, tagList);
 }
 
-function checkIfSaved(recipe) {
-  if (user.favoriteRecipes.includes(recipe.id)) {
-    return '<img src="./images/apple-logo.png" alt="filled apple icon" class="card-apple-icon">';
-  } else {
-    return '<img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">';
-  }
-}
-
 function toggleMenu() {
   menuOpen = !menuOpen;
   domUpdates.toggleMenuVis(menuOpen);
@@ -144,36 +144,35 @@ function toggleFilter() {
 
 function showSavedRecipes() {
   viewFavorites = true;
+  viewRecipesToCook = false;
   reloadRecipes();
   domUpdates.showMyRecipesBanner();
 }
 
 function showRecipesToCook() {
   viewRecipesToCook = true;
-  // reloadRecipes();
-  domUpdates.clearCards();
+  viewFavorites = false;
+  reloadRecipes();
   domUpdates.showRecipesToCookBanner();
 }
 
 function showAllRecipes() {
-  viewFavorites = false;
   viewRecipesToCook = false;
+  viewFavorites = false;
   reloadRecipes();
   domUpdates.showWelcomeBanner();
 }
 
-
-// FAVORITE RECIPE FUNCTIONALITY
 function cookRecipe() {
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-  let missingIngredients = user.pantry.canCook(recipe)
+  let missingIngredients = user.pantry.cook(recipe);
   if (missingIngredients.length) {
     domUpdates.clearModalView(fullRecipeInfo);
     domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
     domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
-    domUpdates.generateRecipeTitle(recipe, fullRecipeInfo);
-    domUpdates.addRecipeImage(recipe);
+    domUpdates.displayRecipeTitle(recipe, fullRecipeInfo);
+    domUpdates.displayRecipeImage(recipe);
   } else {
     domUpdates.displayPantryInfo(generatePantryInfo());
     user.addRecipe("recipesToCook", recipeId);
@@ -187,13 +186,10 @@ function updateUserPantryAPI(user, recipe) {
       fetchRequests.postIngredient(user, ingredient)
     }
   })
-  }
+ }
 
-function returnToRecipeView() {
-  domUpdates.clearModalView(fullRecipeInfo);
-  domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
-  recipeOkayButton.style.display = "none";
-  document.getElementById("overlay").remove();
+function returnToRecipeInfo() {
+  domUpdates.returnToRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
 }
 
 function runCardButtons(event) {
@@ -202,17 +198,17 @@ function runCardButtons(event) {
   } else if (event.target.id === "exit-recipe-btn") {
     domUpdates.exitRecipe(fullRecipeInfo, recipeOkayButton);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
-    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
+    domUpdates.displayRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
   }
 }
 
+// FAVORITE RECIPE FUNCTIONALITY
 function addToMyRecipes(event) {
   let cardId = parseInt(event.target.closest(".recipe-card").id);
+  domUpdates.switchImgSrc(user, cardId)
   if (!user.favoriteRecipes.includes(cardId)) {
-    event.target.src = "../images/apple-logo.png";
     user.addRecipe('favoriteRecipes', cardId);
   } else {
-    event.target.src = "../images/apple-logo-outline.png";
     user.removeRecipe('favoriteRecipes', cardId);
   }
 }
@@ -233,6 +229,13 @@ function pressEnterSearch(event) {
   event.preventDefault();
   activeSearch = searchInput.value.toLowerCase();
   reloadRecipes();
+}
+
+function filterByRecipesToCook(recipeArray) {
+  recipeArray = recipeArray.filter(recipe => {
+    return user.recipesToCook.includes(`${recipe.id}`);
+  })
+  return recipeArray;
 }
 
 function filterRecipesByFavorites(recipeArray) {
@@ -275,14 +278,17 @@ function filterRecipes(recipeArray) {
   if (activeSearch) {
     recipeArray = filterRecipesBySearch(recipeArray, activeSearch);
   }
-  if(findSelected('.checked-tags')) {
-    recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tags'));
+  if(findSelected('.checked-tag')) {
+    recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tag'));
   }
   if(findSelected('.pantry-checkbox')) {
     recipeArray = filterRecipesByPantry(recipeArray, findSelected('.pantry-checkbox'))
   }
   if (viewFavorites) {
     recipeArray = filterRecipesByFavorites(recipeArray);
+  }
+  if (viewRecipesToCook) {
+    recipeArray = filterByRecipesToCook(recipeArray);
   }
   return recipeArray
 }

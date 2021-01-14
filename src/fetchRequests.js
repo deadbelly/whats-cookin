@@ -1,17 +1,38 @@
 const fetchRequests = {
   getIngredients() {
     return fetch("http://localhost:3001/api/v1/ingredients")
-    .then(response => response.json());
+    .then(response => {
+      if (!response.ok) {
+        throw Error(`${response.status} ${response.statusText}`);
+      }
+      return response;
+    })
+    .then(response => response.json())
+    .catch(error => alert(error));
   },
 
   getUsers() {
     return fetch("http://localhost:3001/api/v1/users")
-    .then(response => response.json());
+    .then(response => {
+      if (!response.ok) {
+        throw Error(`${response.status} ${response.statusText}`);
+      }
+      return response;
+    })
+    .then(response => response.json())
+    .catch(error => alert(error));
   },
 
   getRecipes() {
     return fetch("http://localhost:3001/api/v1/recipes")
-    .then(response => response.json());
+    .then(response => {
+      if (!response.ok) {
+        throw Error(`${response.status} ${response.statusText}`);
+      }
+      return response;
+    })
+    .then(response => response.json())
+    .catch(error => alert(error));
   },
 
   postIngredient(user, ingredient) {
@@ -28,7 +49,7 @@ const fetchRequests = {
     })
     .then(response => response.json())
     .then(data => data)
-    .catch(err => error);
+    .catch(err => console.log(error));
   }
 };
 

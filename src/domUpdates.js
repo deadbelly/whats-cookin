@@ -2,7 +2,7 @@ import User from './user.js';
 
 const domUpdates = {
     //WELCOME MESSAGE
-     loadUserDom(user) {
+     displayWelcomeMessage(user) {
         let firstName = user.name.split(" ")[0];
         let welcomeMsg = `
           <div class="welcome-msg">
@@ -13,7 +13,7 @@ const domUpdates = {
       },
 
     //RECIPE CARDS
-      addToDom(index, main, recipeInfo, shortRecipeName, iconStatus) {
+      addCard(main, recipeInfo, shortRecipeName, iconStatus) {
         let cardHtml = `
           <div class="recipe-card" id=${recipeInfo.id} >
             <h3 maxlength="40">${shortRecipeName}</h3>
@@ -35,7 +35,23 @@ const domUpdates = {
         document.querySelectorAll('.recipe-card').forEach(card => card.remove())
       },
 
-    //FILTER BY RECIPE TAGS
+      returnSavedImg() {
+        return '<img src="./images/apple-logo.png" alt="filled apple icon" class="card-apple-icon">';
+      },
+
+      returnNormalImg() {
+        return '<img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">';
+      },
+
+      switchImgSrc(user, cardId) {
+        if (!user.favoriteRecipes.includes(cardId)) {
+          event.target.src = "../images/apple-logo.png";
+        } else {
+          event.target.src = "../images/apple-logo-outline.png";
+        }
+      },
+
+    //SIDEBAR
       listTags(allTags, tagList) {
         allTags.forEach(tag => {
           let tagHtml = `<li><input type="checkbox" class="checked-tag" id="${tag}">
@@ -44,59 +60,40 @@ const domUpdates = {
         });
       },
 
-       hideUnselectedRecipes(foundRecipes) {
-        foundRecipes.forEach(recipe => {
-          let domRecipe = document.getElementById(`${recipe.id}`);
-          domRecipe.style.display = "none";
-        });
-      },
-
-      toggleFilterVis(viewTags) {
-        var tagDropdown = document.querySelector(".tag-list");
-        var filterRecipes = document.querySelector(".filter-btn");
-        if (viewTags) {
-          tagDropdown.style.display = "block";
-          filterRecipes.style.display = "block";
-        } else {
-          tagDropdown.style.display = "none";
-          filterRecipes.style.display = "none";
-        }
-      },
-
     //RECIPE INSTRUCTIONS
-      openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton) {
+      displayRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton) {
         fullRecipeInfo.style.display = "inline";
         let recipeId = event.path.find(e => e.id).id;
         let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
         cookRecipeButton.setAttribute("id", recipeId);
         recipeOkayButton.setAttribute("id", recipeId);
-        this.generateInstructions(recipe, fullRecipeInfo);
-        this.generateIngredients(recipe, fullRecipeInfo);
-        this.generateRecipeTitle(recipe, fullRecipeInfo);
-        this.addRecipeImage(recipe);
+        this.displayInstructions(recipe, fullRecipeInfo);
+        this.displayIngredients(recipe, fullRecipeInfo);
+        this.displayRecipeTitle(recipe, fullRecipeInfo);
+        this.displayRecipeImage(recipe);
         fullRecipeInfo.insertAdjacentHTML("beforebegin", "<section id='overlay'></div>");
         cookRecipeButton.style.display = "block";
       },
 
-      generateIngredients(recipe, fullRecipeInfo) {
+      displayIngredients(recipe, fullRecipeInfo) {
         let ingredients = recipe.ingredients.map(i => {
           return `${this.capitalize(i.name)} (${i.quantity.amount} ${i.quantity.unit})`
         }).join(", ");
         fullRecipeInfo.insertAdjacentHTML("afterbegin", `<h4>Ingredients</h4> <p>${ingredients}</p>`)
       },
 
-      generateRecipeTitle(recipe, fullRecipeInfo) {
+      displayRecipeTitle(recipe, fullRecipeInfo) {
         let recipeTitle = `
           <button id="exit-recipe-btn">X</button>
           <h3 id="recipe-title">${recipe.name}</h3>`
         fullRecipeInfo.insertAdjacentHTML("afterbegin", recipeTitle);
       },
 
-      addRecipeImage(recipe) {
+      displayRecipeImage(recipe) {
         document.getElementById("recipe-title").style.backgroundImage = `url(${recipe.image})`;
       },
 
-       generateInstructions(recipe, fullRecipeInfo) {
+       displayInstructions(recipe, fullRecipeInfo) {
         let instructionsList = "";
         let instructions = recipe.instructions.map(i => {
           return i.instruction
@@ -108,6 +105,7 @@ const domUpdates = {
         fullRecipeInfo.insertAdjacentHTML("afterbegin", "<h4>Instructions</h4>");
        },
 
+       //MISSING INGREDIENTS
        displayMissingIngredients(missingIngredients, recipeCookButton, fullRecipeInfo, recipeOkayButton) {
          recipeCookButton.style.display = "none";
          missingIngredients.forEach(ingredient => {
@@ -131,10 +129,15 @@ const domUpdates = {
        },
 
        exitRecipe(fullRecipeInfo, recipeOkayButton) {
-        while (fullRecipeInfo.childNodes.length > 4) {
-          fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
-        };
+        this.clearModalView(fullRecipeInfo)
         fullRecipeInfo.style.display = "none";
+        recipeOkayButton.style.display = "none";
+        document.getElementById("overlay").remove();
+      },
+
+      returnToRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton) {
+        this.clearModalView(fullRecipeInfo);
+        this.displayRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
         recipeOkayButton.style.display = "none";
         document.getElementById("overlay").remove();
       },
@@ -147,6 +150,7 @@ const domUpdates = {
 
       showRecipesToCookBanner() {
         document.querySelector(".welcome-msg").style.display = "none";
+        document.querySelector(".my-recipes-banner").style.display = "none";
         document.querySelector(".recipes-to-cook-banner").style.display = "block";
       },
 
@@ -156,13 +160,24 @@ const domUpdates = {
         document.querySelector(".recipes-to-cook-banner").style.display = "none";
       },
 
-      //SEARCH RECIPES & INGREDIENTS
        toggleMenuVis(menuOpen) {
         var menuDropdown = document.querySelector(".drop-menu");
         if (menuOpen) {
           menuDropdown.style.display = "block";
         } else {
           menuDropdown.style.display = "none";
+        }
+      },
+
+      toggleFilterVis(viewTags) {
+        var tagDropdown = document.querySelector(".tag-list");
+        var filterRecipes = document.querySelector(".filter-btn");
+        if (viewTags) {
+          tagDropdown.style.display = "block";
+          filterRecipes.style.display = "block";
+        } else {
+          tagDropdown.style.display = "none";
+          filterRecipes.style.display = "none";
         }
       },
 
