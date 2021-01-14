@@ -17,13 +17,6 @@ class User {
     let i = this[array].indexOf(recipeId);
     this[array].splice(i, 1);
   }
-
-  filterRecipes(array, key, search) {
-    if (key === 'ingredients') {
-      return this[array].filter(recipe => recipe.listIngredientNames().includes(search));
-    }
-    return this[array].filter(recipe => recipe[key].includes(search));
-  }
 }
 
 module.exports = User;
