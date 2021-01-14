@@ -145,12 +145,14 @@ function toggleFilter() {
 
 function showSavedRecipes() {
   viewFavorites = true;
+  viewRecipesToCook = false;
   reloadRecipes();
   domUpdates.showMyRecipesBanner();
 }
 
 function showRecipesToCook() {
   viewRecipesToCook = true;
+  viewFavorites = false;
   console.log(viewRecipesToCook)
   reloadRecipes();
   domUpdates.showRecipesToCookBanner();
@@ -229,8 +231,9 @@ function pressEnterSearch(event) {
 }
 
 function filterByRecipesToCook(recipeArray) {
+  console.log(user.recipesToCook);
   recipeArray = recipeArray.filter(recipe => {
-    return user.recipesToCook.includes(recipe.id);
+    return user.recipesToCook.includes(`${recipe.id}`);
   })
   return recipeArray;
 }
