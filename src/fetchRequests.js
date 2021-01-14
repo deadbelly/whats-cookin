@@ -27,8 +27,8 @@ const fetchRequests = {
       }),
     })
     .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(error));
+    .then(data => data)
+    .catch(err => error);
   }
 };
 
