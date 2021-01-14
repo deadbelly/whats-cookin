@@ -48,5 +48,13 @@ This site was designed to be responsive to screen size, as seen below.
 5. SASS
 6. Normalize.scss
 
+## Future Iterations
+ * When a user can cook a meal alert user that meal has been added to recipes to cook.
+ * Add an missing images for recipes (specifically Double Raspberry Souffle).
+ * Fix any tags displaying as "undefined".
+ * Display all of the recipe's tags to the card.
+ * Allow a user to set limits on whe they're low on specific ingredients and be notified to purchase more ingredients.
+ * Consolidate search buttons and have the DOM update more fluildly.
+
 ## Project Members
 This project was designed and implemented by  [Boone Epstein](https://github.com/deadbelly) & [Brian Forbes](https://github.com/Codeherder19) & [Cameron Aragon](https://github.com/caragon4695) 
