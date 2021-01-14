@@ -7,7 +7,7 @@ Link to orginal codebase [here](https://drive.google.com/file/d/1DAnwfBNtdcC3ZuM
 
 
 Link to GitHub Pages Site [here](https://deadbelly.github.io/whats-cookin/).
-
+(Note: you have to follow Step 7 of the installation instructions for the site to work properly)
 
 ![gif of site/random user](https://media.giphy.com/media/nh6LVl3mvjlg6wPsEB/giphy.gif)
 
