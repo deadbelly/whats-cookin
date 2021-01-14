@@ -30,6 +30,11 @@ main {
     @include setDimensions(auto, 100%)
   }
 
+  button {
+    background: none;
+    border: none;
+  }
+
   &:hover h3 {
     text-shadow: 0px 0px 4px $inchworm-green;
     transition: .8s ease;
