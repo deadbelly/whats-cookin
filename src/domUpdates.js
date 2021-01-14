@@ -125,7 +125,7 @@ const domUpdates = {
        clearModalView(fullRecipeInfo) {
          while (fullRecipeInfo.childNodes.length > 4) {
            fullRecipeInfo.removeChild(fullRecipeInfo.firstChild);
-         };
+         }
        },
 
        exitRecipe(fullRecipeInfo, recipeOkayButton) {

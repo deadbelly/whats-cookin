@@ -42,7 +42,7 @@ class Pantry {
 
   cook(recipe) {
     let missingIngredients = this.findMissingIngredients(recipe)
-    if(!missingIngredients.length) {
+    if (!missingIngredients.length) {
       this.removeCookedIngredients(recipe);
     }
     return missingIngredients;
