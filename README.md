@@ -1,7 +1,7 @@
 # Refactor Tractor - What's Cookin?
 
 ## About
-This is group project which gave us developers the opportunity to build on top of somebody else's pre-existing codebase. The previous codebase was an application for recipe tracking / meal planning that allows user's to view their favorite recipes and plan shopping trips around them. This was a first for us developers to be working on a previous codebase, although on the job this is common practice, so this was a great experience. All data used in the application is hosted on a local server and accessed on the site using fetch API's.
+This is a group project which gave us developers the opportunity to build on top of somebody else's pre-existing codebase. The previous codebase was an application for recipe tracking / meal planning that allows user's to view their favorite recipes and plan shopping trips around them. This was a first for us developers to be working on a previous codebase, although on the job this is common practice, so this was a great experience. All data used in the application is hosted on a local server and accessed on the site using fetch API's.
 
 Link to orginal codebase [here](https://drive.google.com/file/d/1DAnwfBNtdcC3ZuMqo8Vo7EejB5qUZcMD/view?usp=sharing).
 
