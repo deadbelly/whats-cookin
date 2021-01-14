@@ -10,14 +10,18 @@ import {ingredientsData} from './test-data';
 
 
 describe('User', () => {
-  let user;
   let userInfo;
+  let user;
+  let pantry;
   let recipes;
+  let ingredients;
 
   beforeEach(() => {
+    ingredients = ingredientsData.map(data => new Ingredient(data));
     userInfo = users[0];
     user = new User(userInfo);
-    recipes = recipeData.map(recipe => new Recipe(recipe, ingredientsData));
+    pantry = new Pantry(user);
+    recipes = recipeData.map(recipe => new Recipe(recipe, ingredients));
   });
 
   it('should be a function', () => {
@@ -85,4 +89,12 @@ describe('User', () => {
     user.removeRecipe('recipesToCook', recipes[1].id);
     expect(user.recipesToCook).to.eql([])
   });
+
+  it(`should not save things that aren't recipes`, () => {
+    expect(user.addRecipe.bind(user, ('recipesToCook', 20))).to.throw("Cannot read property 'includes' of undefined");
+    expect(user.addRecipe.bind(user, ('favoriteRecipes', {object: true}))).to.throw("Cannot read property 'includes' of undefined");
+    expect(user.addRecipe.bind(user, ('recipesToCook', 'string'))).to.throw("Cannot read property 'includes' of undefined");
+    expect(user.addRecipe.bind(user, ('favoriteRecipes', false))).to.throw("Cannot read property 'includes' of undefined");
+    expect(user.addRecipe.bind(user, ('favoriteRecipes', [1, 2, 3, 4]))).to.throw("Cannot read property 'includes' of undefined");
+  })
 });

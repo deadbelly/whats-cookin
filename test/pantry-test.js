@@ -36,8 +36,8 @@ describe('Pantry', () => {
     expect(pantry.pantry).to.eql(
       [
       { ingredient: 1, amount: 2 },
-      { ingredient: 2, amount: 4 },
-      { ingredient: 3, amount: 2 }]);
+      { ingredient: 2, amount: 4, modification: -1},
+      { ingredient: 3, amount: 2, modification: -1}]);
   })
 
   it(`should return array of missing ingredients needed to cook a meal`, () => {
@@ -54,5 +54,18 @@ describe('Pantry', () => {
     name: 'oil',
     quantity: { amount: 0.25, unit: 'c' },
     cost: 10}]);
+  });
+
+  it(`should not cook things that aren't recipes`, () => {
+    expect(pantry.cook.bind(pantry, {object: true})).to.throw("Cannot read property 'filter' of undefined");
+    expect(pantry.cook.bind(pantry, 12)).to.throw("Cannot read property 'filter' of undefined");
+    expect(pantry.cook.bind(pantry, false)).to.throw("Cannot read property 'filter' of undefined");
+    expect(pantry.cook.bind(pantry, 'string')).to.throw("Cannot read property 'filter' of undefined");
+  })
+
+  it('should be assignable to a user', () => {
+    expect(user.pantry).to.eql(pantry.pantry)
+    user.pantry = pantry
+    expect(user.pantry.pantry).to.eql(pantry.pantry)
   });
 });
