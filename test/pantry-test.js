@@ -19,7 +19,7 @@ describe('Pantry', () => {
     ingredients = ingredientsData.map(data => new Ingredient(data));
     userInfo = users[0];
     user = new User(userInfo);
-    pantry = new Pantry(user);
+    pantry = new Pantry(user, recipeData[1]);
     recipes = recipeData.map(recipe => new Recipe(recipe, ingredients));
   });
 

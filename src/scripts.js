@@ -175,8 +175,17 @@ function cookRecipe() {
   } else {
     domUpdates.displayPantryInfo(generatePantryInfo());
     user.addRecipe("recipesToCook", recipeId);
+    updateUserPantryAPI(user, recipe);
   }
 }
+
+function updateUserPantryAPI(user, recipe) {
+  user.pantry.pantry.forEach(ingredient => {
+    if (ingredient.modification) {
+      fetchRequests.postIngredient(user, ingredient)
+    }
+  })
+  }
 
 function returnToRecipeInfo() {
   domUpdates.returnToRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
