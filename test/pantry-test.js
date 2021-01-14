@@ -27,27 +27,45 @@ describe('Pantry', () => {
     expect(Pantry).to.be.a('function');
   });
 
-  it('pantry should initialize with an array of users ingredients', () => {
+  it('should initialize with an array of ingredients', () => {
     expect(pantry.pantry).to.eql(user.pantry);
   });
 
-  it('pantry should be able to indicate if a user can cook a given meal', () => {
-    pantry.canCook(recipeData[1]);
+  it('should be able to cook a given meal', () => {
+    pantry.cook(recipes[1]);
     expect(pantry.pantry).to.eql(
-    {id: 2,
-    amount: 4})
-  });
+      [
+      { ingredient: 1, amount: 2 },
+      { ingredient: 2, amount: 4, modification: -1},
+      { ingredient: 3, amount: 2, modification: -1}]);
+  })
 
-  it.only(`if there are not enough ingredients, pantry should return array of ingredients needed to cook a meal`, () => {
-    expect(pantry.canCook(recipes[0])).to.eql([
-  {
+  it(`should return array of missing ingredients needed to cook a meal`, () => {
+    expect(pantry.cook(recipes[0])).to.eql([{
     id: 5,
     name: 'parmesan',
-    cost: 12,
-    quantity: { amount: 0.25, unit: 'c' }
-  }
-]
-);
+    quantity: { amount: 0.25, unit: 'c' },
+    cost: 12}]);
   });
 
+  it(`should return array of missing ingredients needed to cook a different meal`, () => {
+    expect(pantry.cook(recipes[2])).to.eql([{
+    id: 4,
+    name: 'oil',
+    quantity: { amount: 0.25, unit: 'c' },
+    cost: 10}]);
+  });
+
+  it(`should not cook things that aren't recipes`, () => {
+    expect(pantry.cook.bind(pantry, {object: true})).to.throw("Cannot read property 'filter' of undefined");
+    expect(pantry.cook.bind(pantry, 12)).to.throw("Cannot read property 'filter' of undefined");
+    expect(pantry.cook.bind(pantry, false)).to.throw("Cannot read property 'filter' of undefined");
+    expect(pantry.cook.bind(pantry, 'string')).to.throw("Cannot read property 'filter' of undefined");
+  })
+
+  it('should be assignable to a user', () => {
+    expect(user.pantry).to.eql(pantry.pantry)
+    user.pantry = pantry
+    expect(user.pantry.pantry).to.eql(pantry.pantry)
+  });
 });
