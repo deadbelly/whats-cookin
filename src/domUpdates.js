@@ -148,6 +148,7 @@ const domUpdates = {
 
       showRecipesToCookBanner() {
         document.querySelector(".welcome-msg").style.display = "none";
+        document.querySelector(".my-recipes-banner").style.display = "none";
         document.querySelector(".recipes-to-cook-banner").style.display = "block";
       },
 

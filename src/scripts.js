@@ -102,6 +102,7 @@ function generateIngredients(ingredients) {
 //CALL domUpdates
 function createCards() {
   let recipeArray = filterRecipes(recipes);
+  console.log(recipeArray)
   recipeArray.forEach(recipe => {
     let shortRecipeName = recipe.name;
     let iconStatus = checkIfSaved(recipe);
@@ -144,20 +145,22 @@ function toggleFilter() {
 
 function showSavedRecipes() {
   viewFavorites = true;
+  viewRecipesToCook = false;
   reloadRecipes();
   domUpdates.showMyRecipesBanner();
 }
 
 function showRecipesToCook() {
   viewRecipesToCook = true;
-  // reloadRecipes();
-  domUpdates.clearCards();
+  viewFavorites = false;
+  console.log(viewRecipesToCook)
+  reloadRecipes();
   domUpdates.showRecipesToCookBanner();
 }
 
 function showAllRecipes() {
-  viewFavorites = false;
   viewRecipesToCook = false;
+  viewFavorites = false;
   reloadRecipes();
   domUpdates.showWelcomeBanner();
 }
@@ -165,6 +168,7 @@ function showAllRecipes() {
 function cookRecipe() {
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
+  let missingIngredients = user.pantry.canCook(recipe)
   let missingIngredients = user.pantry.cook(recipe);
   if (missingIngredients.length) {
     domUpdates.clearModalView(fullRecipeInfo);
@@ -185,7 +189,7 @@ function updateUserPantryAPI(user, recipe) {
       fetchRequests.postIngredient(user, ingredient)
     }
   })
-  }
+ }
 
 function returnToRecipeInfo() {
   domUpdates.returnToRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
@@ -228,6 +232,14 @@ function pressEnterSearch(event) {
   event.preventDefault();
   activeSearch = searchInput.value.toLowerCase();
   reloadRecipes();
+}
+
+function filterByRecipesToCook(recipeArray) {
+  console.log(user.recipesToCook);
+  recipeArray = recipeArray.filter(recipe => {
+    return user.recipesToCook.includes(`${recipe.id}`);
+  })
+  return recipeArray;
 }
 
 function filterRecipesByFavorites(recipeArray) {
@@ -278,6 +290,9 @@ function filterRecipes(recipeArray) {
   }
   if (viewFavorites) {
     recipeArray = filterRecipesByFavorites(recipeArray);
+  }
+  if (viewRecipesToCook) {
+    recipeArray = filterByRecipesToCook(recipeArray);
   }
   return recipeArray
 }
