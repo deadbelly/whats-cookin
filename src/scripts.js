@@ -102,7 +102,7 @@ function generateIngredients(ingredients) {
 //CALL domUpdates
 function createCards() {
   let recipeArray = filterRecipes(recipes);
-  recipeArray.forEach(recipe => {
+  recipeArray.forEach((recipe, index) => {
     let shortRecipeName = recipe.name;
     let iconStatus = checkIfSaved(recipe);
     if (recipe.name.length > 40) {
