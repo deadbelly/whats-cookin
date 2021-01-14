@@ -49,7 +49,7 @@ const fetchRequests = {
     })
     .then(response => response.json())
     .then(data => data)
-    .catch(err => console.log(error));
+    .catch(error => console.log(error));
   }
 };
 

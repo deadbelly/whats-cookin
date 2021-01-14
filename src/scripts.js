@@ -102,7 +102,7 @@ function generateIngredients(ingredients) {
 //CALL domUpdates
 function createCards() {
   let recipeArray = filterRecipes(recipes);
-  recipeArray.forEach((recipe, index) => {
+  recipeArray.forEach(recipe => {
     let shortRecipeName = recipe.name;
     let iconStatus = checkIfSaved(recipe);
     if (recipe.name.length > 40) {
@@ -180,7 +180,7 @@ function cookRecipe() {
   }
 }
 
-function updateUserPantryAPI(user, recipe) {
+function updateUserPantryAPI(user) {
   user.pantry.pantry.forEach(ingredient => {
     if (ingredient.modification) {
       fetchRequests.postIngredient(user, ingredient)
@@ -270,7 +270,8 @@ function filterRecipesByPantry(recipeArray, selected) {
 function filterRecipesBySearch(recipeArray, search) {
   recipeArray = recipeArray.filter(recipe => {
     return (recipe.listIngredientNames().find(ingredient => ingredient.includes(search)) ||
-    recipe.name.toLowerCase().includes(search))});
+    recipe.name.toLowerCase().includes(search))
+  });
   return recipeArray
 }
 
@@ -278,10 +279,10 @@ function filterRecipes(recipeArray) {
   if (activeSearch) {
     recipeArray = filterRecipesBySearch(recipeArray, activeSearch);
   }
-  if(findSelected('.checked-tag')) {
+  if (findSelected('.checked-tag')) {
     recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tag'));
   }
-  if(findSelected('.pantry-checkbox')) {
+  if (findSelected('.pantry-checkbox')) {
     recipeArray = filterRecipesByPantry(recipeArray, findSelected('.pantry-checkbox'))
   }
   if (viewFavorites) {
