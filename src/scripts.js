@@ -56,14 +56,14 @@ searchForm.addEventListener("submit", pressEnterSearch);
 tagFilterDropdown.addEventListener("click", toggleFilter);
 cookRecipeButton.addEventListener("click", cookRecipe);
 recipesToCookBtn.addEventListener("click", showRecipesToCook);
-recipeOkayButton.addEventListener("click", returnToRecipeView);
+recipeOkayButton.addEventListener("click", returnToRecipeInfo);
 
 function loadAllData() {
   Promise.all([fetchRequests.getUsers(), fetchRequests.getRecipes(), fetchRequests.getIngredients()])
   .then(values => {
     user = generateUser(values[0]);
     user.pantry = generateUserPantry(user);
-    domUpdates.loadUserDom(user);
+    domUpdates.displayWelcomeMessage(user);
     ingredients = generateIngredients(values[2]);
     recipes = generateRecipes(values[1]);
     domUpdates.displayPantryInfo(generatePantryInfo());
@@ -109,8 +109,16 @@ function createCards() {
     if (recipe.name.length > 40) {
       shortRecipeName = recipe.name.substring(0, 40) + "...";
     }
-    domUpdates.addToDom(main, recipe, shortRecipeName, iconStatus);
+    domUpdates.addCard(main, recipe, shortRecipeName, iconStatus);
   });
+}
+
+function checkIfSaved(recipe) {
+  if (user.favoriteRecipes.includes(recipe.id)) {
+    return domUpdates.returnSavedImg();
+  } else {
+    return domUpdates.returnNormalImg();
+  }
 }
 
 function reloadRecipes() {
@@ -123,14 +131,6 @@ function findTags() {
     return tags.concat(recipe.tags).sort();
   }, []));
   domUpdates.listTags(tags, tagList);
-}
-
-function checkIfSaved(recipe) {
-  if (user.favoriteRecipes.includes(recipe.id)) {
-    return '<img src="./images/apple-logo.png" alt="filled apple icon" class="card-apple-icon">';
-  } else {
-    return '<img src="./images/apple-logo-outline.png" alt="unfilled apple icon" class="card-apple-icon">';
-  }
 }
 
 function toggleMenu() {
@@ -165,30 +165,34 @@ function showAllRecipes() {
   domUpdates.showWelcomeBanner();
 }
 
-
-// FAVORITE RECIPE FUNCTIONALITY
 function cookRecipe() {
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
   let missingIngredients = user.pantry.canCook(recipe)
-  console.log(missingIngredients)
+  let missingIngredients = user.pantry.cook(recipe);
   if (missingIngredients.length) {
     domUpdates.clearModalView(fullRecipeInfo);
     domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
     domUpdates.displayMissingIngredients(missingIngredients, cookRecipeButton, fullRecipeInfo, recipeOkayButton);
-    domUpdates.generateRecipeTitle(recipe, fullRecipeInfo);
-    domUpdates.addRecipeImage(recipe);
+    domUpdates.displayRecipeTitle(recipe, fullRecipeInfo);
+    domUpdates.displayRecipeImage(recipe);
   } else {
     domUpdates.displayPantryInfo(generatePantryInfo());
     user.addRecipe("recipesToCook", recipeId);
+    updateUserPantryAPI(user, recipe);
   }
 }
 
-function returnToRecipeView() {
-  domUpdates.clearModalView(fullRecipeInfo);
-  domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
-  recipeOkayButton.style.display = "none";
-  document.getElementById("overlay").remove();
+function updateUserPantryAPI(user, recipe) {
+  user.pantry.pantry.forEach(ingredient => {
+    if (ingredient.modification) {
+      fetchRequests.postIngredient(user, ingredient)
+    }
+  })
+ }
+
+function returnToRecipeInfo() {
+  domUpdates.returnToRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
 }
 
 function runCardButtons(event) {
@@ -197,17 +201,17 @@ function runCardButtons(event) {
   } else if (event.target.id === "exit-recipe-btn") {
     domUpdates.exitRecipe(fullRecipeInfo, recipeOkayButton);
   } else if (isDescendant(event.target.closest(".recipe-card"), event.target)) {
-    domUpdates.openRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
+    domUpdates.displayRecipeInfo(event, fullRecipeInfo, recipes, cookRecipeButton, recipeOkayButton);
   }
 }
 
+// FAVORITE RECIPE FUNCTIONALITY
 function addToMyRecipes(event) {
   let cardId = parseInt(event.target.closest(".recipe-card").id);
+  domUpdates.switchImgSrc(user, cardId)
   if (!user.favoriteRecipes.includes(cardId)) {
-    event.target.src = "../images/apple-logo.png";
     user.addRecipe('favoriteRecipes', cardId);
   } else {
-    event.target.src = "../images/apple-logo-outline.png";
     user.removeRecipe('favoriteRecipes', cardId);
   }
 }
