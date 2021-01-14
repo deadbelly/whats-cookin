@@ -1,5 +1,5 @@
 class Pantry {
-  constructor(user) {
+  constructor(user, recipe) {
     this.pantry = user.pantry;
   }
 
@@ -35,7 +35,8 @@ class Pantry {
 
   removeCookedIngredients(recipe) {
     recipe.ingredients.forEach(ingredient => {
-      this.findIngredient(ingredient.id).amount -= ingredient.quantity.amount
+      this.findIngredient(ingredient.id).amount -= ingredient.quantity.amount;
+      this.findIngredient(ingredient.id).modification = (0 - ingredient.quantity.amount);
     })
   }
 

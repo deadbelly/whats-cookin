@@ -19,7 +19,7 @@ describe('Pantry', () => {
     ingredients = ingredientsData.map(data => new Ingredient(data));
     userInfo = users[0];
     user = new User(userInfo);
-    pantry = new Pantry(user);
+    pantry = new Pantry(user, recipeData[1]);
     recipes = recipeData.map(recipe => new Recipe(recipe, ingredients));
   });
 
@@ -31,14 +31,14 @@ describe('Pantry', () => {
     expect(pantry.pantry).to.eql(user.pantry);
   });
 
-  it('pantry should be able to indicate if a user can cook a given meal', () => {
+  it.only('pantry should be able to indicate if a user can cook a given meal', () => {
     pantry.canCook(recipeData[1]);
     expect(pantry.pantry).to.eql(
     {id: 2,
     amount: 4})
   });
 
-  it.only(`if there are not enough ingredients, pantry should return array of ingredients needed to cook a meal`, () => {
+  it(`if there are not enough ingredients, pantry should return array of ingredients needed to cook a meal`, () => {
     expect(pantry.canCook(recipes[0])).to.eql([
   {
     id: 5,
