@@ -102,6 +102,7 @@ function generateIngredients(ingredients) {
 //CALL domUpdates
 function createCards() {
   let recipeArray = filterRecipes(recipes);
+  console.log(recipeArray)
   recipeArray.forEach(recipe => {
     let shortRecipeName = recipe.name;
     let iconStatus = checkIfSaved(recipe);
@@ -150,14 +151,14 @@ function showSavedRecipes() {
 
 function showRecipesToCook() {
   viewRecipesToCook = true;
-  // reloadRecipes();
-  domUpdates.clearCards();
+  console.log(viewRecipesToCook)
+  reloadRecipes();
   domUpdates.showRecipesToCookBanner();
 }
 
 function showAllRecipes() {
-  viewFavorites = false;
   viewRecipesToCook = false;
+  viewFavorites = false;
   reloadRecipes();
   domUpdates.showWelcomeBanner();
 }
@@ -168,6 +169,7 @@ function cookRecipe() {
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
   let missingIngredients = user.pantry.canCook(recipe)
+  console.log(missingIngredients)
   if (missingIngredients.length) {
     domUpdates.clearModalView(fullRecipeInfo);
     domUpdates.displayTotalCostToCook(missingIngredients, fullRecipeInfo);
@@ -226,6 +228,13 @@ function pressEnterSearch(event) {
   reloadRecipes();
 }
 
+function filterByRecipesToCook(recipeArray) {
+  recipeArray = recipeArray.filter(recipe => {
+    return user.recipesToCook.includes(recipe.id);
+  })
+  return recipeArray;
+}
+
 function filterRecipesByFavorites(recipeArray) {
   recipeArray = recipeArray.filter(recipe => {
     return user.favoriteRecipes.includes(recipe.id);
@@ -266,14 +275,17 @@ function filterRecipes(recipeArray) {
   if (activeSearch) {
     recipeArray = filterRecipesBySearch(recipeArray, activeSearch);
   }
-  if(findSelected('.checked-tags')) {
-    recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tags'));
+  if(findSelected('.checked-tag')) {
+    recipeArray = filterRecipesByTag(recipeArray, findSelected('.checked-tag'));
   }
   if(findSelected('.pantry-checkbox')) {
     recipeArray = filterRecipesByPantry(recipeArray, findSelected('.pantry-checkbox'))
   }
   if (viewFavorites) {
     recipeArray = filterRecipesByFavorites(recipeArray);
+  }
+  if (viewRecipesToCook) {
+    recipeArray = filterByRecipesToCook(recipeArray);
   }
   return recipeArray
 }
