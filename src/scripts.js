@@ -102,7 +102,6 @@ function generateIngredients(ingredients) {
 //CALL domUpdates
 function createCards() {
   let recipeArray = filterRecipes(recipes);
-  console.log(recipeArray)
   recipeArray.forEach(recipe => {
     let shortRecipeName = recipe.name;
     let iconStatus = checkIfSaved(recipe);
@@ -153,7 +152,6 @@ function showSavedRecipes() {
 function showRecipesToCook() {
   viewRecipesToCook = true;
   viewFavorites = false;
-  console.log(viewRecipesToCook)
   reloadRecipes();
   domUpdates.showRecipesToCookBanner();
 }
@@ -168,7 +166,6 @@ function showAllRecipes() {
 function cookRecipe() {
   let recipeId = event.target.id;
   let recipe = recipes.find(recipe => recipe.id === Number(recipeId));
-  let missingIngredients = user.pantry.canCook(recipe)
   let missingIngredients = user.pantry.cook(recipe);
   if (missingIngredients.length) {
     domUpdates.clearModalView(fullRecipeInfo);
@@ -235,7 +232,6 @@ function pressEnterSearch(event) {
 }
 
 function filterByRecipesToCook(recipeArray) {
-  console.log(user.recipesToCook);
   recipeArray = recipeArray.filter(recipe => {
     return user.recipesToCook.includes(`${recipe.id}`);
   })
