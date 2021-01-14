@@ -45,9 +45,9 @@ const domUpdates = {
 
       switchImgSrc(user, cardId) {
         if (!user.favoriteRecipes.includes(cardId)) {
-          event.target.src = "../images/apple-logo.png";
+          event.target.src = "./images/apple-logo.png";
         } else {
-          event.target.src = "../images/apple-logo-outline.png";
+          event.target.src = "./images/apple-logo-outline.png";
         }
       },
 
