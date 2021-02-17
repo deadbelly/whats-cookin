@@ -61,4 +61,4 @@ This site was designed to be responsive to screen size, as seen below.
  * Consolidate search buttons and have the DOM update more fluildly.
 
 ## Project Members
-This project was designed and implemented by  [Boone Epstein](https://github.com/deadbelly) & [Brian Forbes](https://github.com/Codeherder19) & [Cameron Aragon](https://github.com/caragon4695) 
+This project was designed and implemented by  [Boone Epstein](https://github.com/deadbelly) & [Brian Forbes](https://github.com/Codeherder19) & [Cameron Aragon](https://github.com/camaragon) 
